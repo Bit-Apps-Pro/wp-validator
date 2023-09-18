@@ -1,0 +1,29 @@
+{
+    "name": "bitapps/validator-sanitizer",
+    "description": "PHP Validation and Sanitization Library",
+    "type": "library",
+    "license": "gpl-2",
+    "authors": [
+        {
+          "email": "developer@bitcode.pro",
+          "name": "BitApps"
+        }
+      ],
+    "autoload": {
+        "psr-4": {
+            "BitApps\\ValidatorSanitizer\\": "src/"
+        }
+    },
+    "scripts":{
+        "test":"./vendor/bin/pest"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.18"
+    },
+
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": false
+        }
+    }
+}
