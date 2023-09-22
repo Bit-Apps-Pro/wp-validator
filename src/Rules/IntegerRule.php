@@ -1,20 +1,21 @@
 <?php
-
 namespace BitApps\ValidatorSanitizer\Rules;
 
-class StringRule
+class IntegerRule
 {
-    protected $message = "The :attribute field should be string";
+    protected $message = "The :attribute field should be integer";
+
     protected static $attribute;
 
     public static function validate($value, $field = null)
     {
         static::$attribute = $field;
-        return is_string($value);
+        return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }
 
     public function message()
     {
         return str_replace(":attribute", static::$attribute, $this->message);
     }
+
 }
