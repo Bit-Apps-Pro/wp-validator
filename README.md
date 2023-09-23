@@ -1,8 +1,8 @@
-# php-validator-sanitizer
+# PHP Validator Sanitizer
 
 This PHP package provides a comprehensive solution for input validation and sanitation. It allows developers to easily validate user input against various rules and sanitize it to prevent security vulnerabilities.
 
-## Features
+# Features
 
 - **Data Validation:** Easily validate user inputs, form submissions, and API requests.
 - **Custom Validation Rules:** Define your custom validation rules to suit your application's specific needs.
