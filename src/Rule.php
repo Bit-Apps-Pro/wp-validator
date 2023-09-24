@@ -9,6 +9,8 @@ abstract class Rule
 
     protected $params = [];
 
+    protected $skipRule = true;
+
     protected $fillableParams = [];
 
     abstract public function validate();
@@ -20,5 +22,10 @@ abstract class Rule
                 throw new RequiredParameterMissingException("Missing required parameter ");
             }
         }
+    }
+
+    public function skipRule()
+    {
+        return $this->skipRule;
     }
 }
