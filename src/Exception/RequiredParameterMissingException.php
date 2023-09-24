@@ -1,8 +1,9 @@
 <?php
 
-namespace BitApps\ValidatorSanitizer;
+namespace BitApps\WPValidator;
 
 class RequiredParameterMissingException extends \Exception
+
 {
 
 }

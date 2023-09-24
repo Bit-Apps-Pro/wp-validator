@@ -1,5 +1,5 @@
 <?php
-namespace BitApps\ValidatorSanitizer\Rules;
+namespace BitApps\WPValidator\Rules;
 
 class MinRule
 {

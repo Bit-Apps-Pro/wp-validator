@@ -1,8 +1,9 @@
 {
-    "name": "bitapps/validator-sanitizer",
+    "name": "bitapps/wp-validator",
     "description": "PHP Validation and Sanitization Library",
     "type": "library",
-    "license": "gpl-2",
+    "license": "MIT",
+    "version": "1.0.0",
     "authors": [
         {
           "email": "developer@bitcode.pro",
@@ -11,11 +12,11 @@
       ],
     "autoload": {
         "psr-4": {
-            "BitApps\\ValidatorSanitizer\\": "src/"
+            "BitApps\\WPValidator\\": "src/"
         }
     },
     "scripts":{
-        "test":"./vendor/bin/pest"
+        "test":"./vendor/bin/pest tests/Feature/ValidatorTest.php"
     },
     "require-dev": {
         "pestphp/pest": "^2.18"

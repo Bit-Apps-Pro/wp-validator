@@ -1,14 +1,17 @@
 <?php
 
-namespace BitApps\ValidatorSanitizer;
+namespace BitApps\WPValidator;
 
-use BitApps\ValidatorSanitizer\RuleErrorException;
+use BitApps\WPValidator\RuleErrorException;
 
 class Validator
 {
     protected $data;
     protected $rules = [];
     protected $errors = [];
+
+    private $customMessages = [];
+    private $attributeLabels = [];
 
     // public function __construct($data, $rules)
     // {
@@ -32,57 +35,46 @@ class Validator
 
     }
 
-    public function make($data, $ruleFields, $messages = null, $replaceAttributes = null)
+    public function parseRule($rule)
     {
+        $exp = explode(':', $rule, 2);
+        $ruleName = $exp[0];
+
+        $params = [$exp[1]];
+
+        return [$ruleName, $params];
+    }
+
+    public function make($data, $ruleFields, $customMessages = null, $replaceAttributes = null)
+    {
+
         $this->data = $data;
+
+        // echo "<pre>";
+        // echo print_r($ruleFields, true);
+        // echo "<pre>";
         foreach ($ruleFields as $field => $rules) {
+            // if (!is_array($rules)) {
+            //     $rules = explode('|', $rules);
+            // }
+            foreach ($rules as $index => $t) {
+                $rule = $this->resolveRule($t);
+                $value = $this->getValue($field);
+                $isValidated = $rule::validate($value, $field);
 
-            if (!is_array($rules)) {
-                $rules = explode('|', $rules);
-            }
+                if (!$isValidated) {
 
-            foreach ($rules as $rule) {
-                $rule = (new self)->resolveRule($rule);
+                    $message = $customMessages;
 
-                // if (!$rule->passes($field, $this->getValue($field), $this->data)) {
-                //     $this->addError($field, $rule->message());
-                // }
-                $value = (new self)->getValue($field);
-                if ($rule->check($value)) {
-
-                    (new self)->addError($field, $rule->message($message = ''));
+                    $this->addError($field, $rule->message());
+                    break;
                 }
+
             }
 
         }
+
     }
-
-    // public function validate($data, $rules)
-    // {
-
-    //     $this->data = $data;
-    //     foreach ($rules as $field => $ruleNames) {
-
-    //         if (is_array($ruleNames)) {
-    //             $rules = $ruleNames;
-    //         } else {
-    //             $rules = explode('|', $ruleNames);
-    //         }
-
-    //         foreach ($rules as $rule) {
-    //             $rule = $this->resolveRule($rule);
-
-    //             // if (!$rule->passes($field, $this->getValue($field), $this->data)) {
-    //             //     $this->addError($field, $rule->message());
-    //             // }
-
-    //             if ($rule->check($this->getValue($field))) {
-    //                 $this->addError($field, $rule->message());
-    //             }
-    //         }
-    //     }
-    //     return empty($this->errors);
-    // }
 
     protected function addError($field, $message)
     {
@@ -101,7 +93,15 @@ class Validator
 
     protected function resolveRule($ruleName)
     {
-        $ruleClass = "BitApps\ValidatorSanitizer\\Rules\\" . str_replace(' ', '', ucwords($ruleName));
+
+        if (is_string($ruleName)) {
+
+        } else if (is_subclass_of($ruleName, Rule::class)) {
+            $ruleObj = \is_object($ruleName) ? $ruleName : new $ruleName();
+
+        }
+
+        $ruleClass = "BitApps\WPValidator\\Rules\\" . str_replace(' ', '', ucwords($ruleName)) . 'Rule';
 
         if (!class_exists($ruleClass)) {
             throw new RuleErrorException("Unsupported validation rule: $ruleName");
@@ -139,9 +139,9 @@ class Validator
 
 //Validator Feature
 
-$request->validate(
-    []
-);
+// $request->validate(
+//     []
+// );
 $rules = [];
 
 $requestData = [
@@ -151,7 +151,8 @@ $requestData = [
 
 $rules = [
     'title' => 'required|string',
-    'age' => 'required|integer',
+    'age' => 'required|integer|between:5,10',
+    'option' => 'required|in:option1,option2,option3',
 ];
 
 $customMessages = [
@@ -164,30 +165,31 @@ $attributeLabel = [
     'age' => 'Age',
 ];
 
-$validator = (new Validator)->make($requestData, $rules, $customMessages, $attributeLabel);
+// $validator = (new Validator)->make($requestData, $rules, $customMessages, $attributeLabel);
 
 //File Create with request
 //old package rules feature
 
-#required
-#numeric
-#integer
-#ip
-#IPv4
-#IPv6
-#macAddress
-#JSON
-#array
-#arrayOfString
-#email
-#url
-#string
-#date
-#min
-#max
-#nullable
-#boolean
-#accepted
-#declined
-#timezone
-#lowercase
+#current rules in boiler plate
+// Required
+// Numeric
+// Integer
+// Ip
+// Ipv4
+// Ipv6
+// MacAddress
+// Json
+// Array
+// ArrayOfString
+// Email
+// URL
+// String
+// Date
+// Min
+// Max
+// Nullable
+// Boolean
+// Accepted
+// Timezone
+// Uppercase
+// LowerCase
