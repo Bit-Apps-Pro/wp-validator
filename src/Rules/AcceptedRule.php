@@ -2,7 +2,6 @@
 
 namespace BitApps\ValidatorSanitizer\Rules;
 
-
 class AcceptedRule
 {
     public static function validate($field, $value)
