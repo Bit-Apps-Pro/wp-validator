@@ -9,15 +9,17 @@ class Validator
     protected $data;
     protected $rules = [];
     protected $errors = [];
+    protected $errorMessageBag;
 
     private $customMessages = [];
     private $attributeLabels = [];
 
-    // public function __construct($data, $rules)
-    // {
-    //     $this->data = $data;
-    //     $this->rules = $rules;
-    // }
+    public function __construct()
+    {
+        $this->errorMessageBag = new ErrorMessageBag();
+        // $this->data = $data;
+        // $this->rules = $rules;
+    }
 
     protected function getValue($field)
     {
@@ -57,16 +59,17 @@ class Validator
             // if (!is_array($rules)) {
             //     $rules = explode('|', $rules);
             // }
-            foreach ($rules as $index => $t) {
+            $value = $this->getValue($field);
+            foreach ($rules as $t) {
                 $rule = $this->resolveRule($t);
-                $value = $this->getValue($field);
+
                 $isValidated = $rule::validate($value, $field);
 
                 if (!$isValidated) {
 
-                    $message = $customMessages;
+                    // $message = $customMessages;
 
-                    $this->addError($field, $rule->message());
+                    $this->errorMessageBag->addError($field, $rule->message());
                     break;
                 }
 
@@ -76,10 +79,10 @@ class Validator
 
     }
 
-    protected function addError($field, $message)
-    {
-        $this->errors[$field][] = $message;
-    }
+    // protected function addError($field, $message)
+    // {
+    //     $this->errors[$field][] = $message;
+    // }
 
     public function fails()
     {
@@ -88,26 +91,25 @@ class Validator
 
     public function errors()
     {
-        return $this->errors;
+        return $this->errorMessageBag->getErrors();
     }
 
     protected function resolveRule($ruleName)
     {
 
         if (is_string($ruleName)) {
+            $ruleClass = "BitApps\WPValidator\\Rules\\" . str_replace(' ', '', ucwords($ruleName)) . 'Rule';
 
+            if (!class_exists($ruleClass)) {
+                throw new RuleErrorException("Unsupported validation rule: $ruleName");
+            }
+
+            return new $ruleClass;
         } else if (is_subclass_of($ruleName, Rule::class)) {
-            $ruleObj = \is_object($ruleName) ? $ruleName : new $ruleName();
-
+            $customRuleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
+            return $customRuleClass;
         }
 
-        $ruleClass = "BitApps\WPValidator\\Rules\\" . str_replace(' ', '', ucwords($ruleName)) . 'Rule';
-
-        if (!class_exists($ruleClass)) {
-            throw new RuleErrorException("Unsupported validation rule: $ruleName");
-        }
-
-        return new $ruleClass;
     }
 
 }

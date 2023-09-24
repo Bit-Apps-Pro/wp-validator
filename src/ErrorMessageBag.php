@@ -11,13 +11,14 @@ class ErrorMessageBag
         $this->messages[$field][] = $message;
     }
 
-    public function getMessages($field = null)
+    public function getErrors($field = null)
     {
-        if ($field === null) {
-            return $this->messages;
-        }
+        // if ($field === null) {
+        //     return $this->messages;
+        // }
 
-        return $this->messages[$field] ?? [];
+        // return $this->messages[$field] ?? [];
+        return $this->messages;
     }
 
     public function hasErrors($field = null)
