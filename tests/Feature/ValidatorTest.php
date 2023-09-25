@@ -22,7 +22,7 @@ test('Validation', function () {
 
     $attributeLabel = [
         'name' => 'Name',
-        // 'age' => 'Age',
+        'age' => 'Age',
     ];
 
     $validator = (new Validator);
