@@ -5,10 +5,25 @@ namespace BitApps\WPValidator;
 class ErrorMessageBag
 {
     protected $messages = [];
+    public $customMessages;
 
-    public function addError($field, $message)
+    public function addError($field, $rule, $message)
     {
-        $this->messages[$field][] = $message;
+        $this->messages[$field][$rule] = $message;
+    }
+
+    public function setCustomMessage($field, $ruleName, $attributeLabel, $paramValues, $params)
+    {
+        if (isset($this->customMessages[$field][$ruleName])) {
+            $message = str_replace(":attribute", $attributeLabel, $this->customMessages[$field][$ruleName]);
+            foreach ($params as $key => $param) {
+                if (isset($paramValues[$key])) {
+
+                    $message = str_replace(":" . $param, $paramValues[$key], $message);
+                }
+            }
+            return $this->messages[$field][$ruleName] = $message;
+        }
     }
 
     public function getErrors($field = null)
