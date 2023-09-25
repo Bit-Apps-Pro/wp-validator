@@ -1,16 +1,17 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class RequiredRule
+use BitApps\WPValidator\Rule;
+
+class RequiredRule extends Rule
 {
 
     protected $message = 'The :attribute field is required';
 
     protected static $attribute;
 
-    public static function validate($value, $field = null)
+    public function validate($value, $field = null, $params = [])
     {
-        static::$attribute = $field;
         // if (is_string($value)) {
         //     return !mb_strlen(trim($value), 'UTF-8') > 0;
         // }
@@ -21,8 +22,20 @@ class RequiredRule
         return !empty($value);
     }
 
-    public function message()
+    public function message($attributeLabel)
     {
-        return str_replace(":attribute", static::$attribute, $this->message);
+        return str_replace(":attribute", $attributeLabel, $this->message);
+        // return $this->message();
     }
+    // public function ab()
+    // {
+    //     $data = [
+    //         'name' => [
+    //             'required' => 'The Name field is required',
+    //         ],
+    //         'age' => [
+    //             'required' => 'The Name field is required',
+    //         ],
+    //     ];
+    // }
 }
