@@ -7,15 +7,8 @@ class Validator
     protected $data;
     protected $rules = [];
     protected $errors = [];
-    protected $errorMessageBag;
-
-    private $customMessages = [];
-    private $attributeLabels = [];
-
-    public function __construct()
-    {
-        $this->errorMessageBag = new ErrorMessageBag();
-    }
+    protected $errorBag;
+    protected $customMessage;
 
     protected function getValue($field)
     {
@@ -39,6 +32,7 @@ class Validator
         $exp = explode(':', $rule, 2);
 
         $ruleName = $exp[0];
+        $params = [];
 
         if (isset($exp[1])) {
             $params = explode(',', $exp[1]);
@@ -48,17 +42,18 @@ class Validator
 
     }
 
-    public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null)
+    public function make($data, $ruleFields, $messages = null, $attributeLabels = null)
     {
         $this->data = $data;
-        $this->errorMessageBag->customMessages = $customMessages;
+        $this->errorBag = new ErrorBag();
+        $this->customMessage = new CustomMessage($messages);
 
         foreach ($ruleFields as $field => $rules) {
             $attributeLabel = $field;
 
             $value = $this->getValue($field);
 
-            if (!empty($attributeLabels) && isset($attributeLabels[$field])) {
+            if (isset($attributeLabels[$field])) {
                 $attributeLabel = $attributeLabels[$field];
             }
 
@@ -68,16 +63,26 @@ class Validator
 
                 $ruleClass = $this->resolveRule($ruleName);
 
-                $isValidated = $ruleClass->validate($value, $field, $paramValues);
+                if (!empty($params)) {
+                    $ruleClass->setParameters($paramValues);
+                }
+
+                $isValidated = $ruleClass->validate($value);
 
                 if (!$isValidated) {
                     $message = $ruleClass->message($attributeLabel);
 
-                    if (isset($customMessages[$field][$ruleName])) {
-                        $message = $this->errorMessageBag->setCustomMessage($field, $ruleName, $attributeLabel, $paramValues, $ruleClass->getParams());
+                    if (isset($messages[$field][$ruleName])) {
+                        // $message = $this->errorBag->setCustomMessage($field, $ruleName, $attributeLabel, $paramValues, $ruleClass->getParams());
+                        $message = $this->customMessage
+                            ->setField($field)
+                            ->setRuleName($ruleName)
+                            ->setAttributeLabel($attributeLabel)
+                            ->setParamValues($paramValues)
+                            ->setRuleParams($ruleClass->getParams())->message();
                     }
 
-                    $this->errorMessageBag->addError($field, $ruleName, $message);
+                    $this->errorBag->addError($field, $ruleName, $message);
                     break;
                 }
 
@@ -93,7 +98,7 @@ class Validator
 
     public function errors()
     {
-        return $this->errorMessageBag->getErrors();
+        return $this->errorBag->getErrors();
     }
 
     protected function resolveRule($ruleName)
