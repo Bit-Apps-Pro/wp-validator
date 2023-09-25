@@ -11,9 +11,9 @@ abstract class Rule
 
     protected $skipRule = true;
 
-    protected $fillableParams = [];
+    // protected $fillableParams = [];
 
-    abstract public function validate();
+    abstract public function validate($value, $field = null, $params);
 
     protected function requireParameters(array $params)
     {
@@ -27,5 +27,10 @@ abstract class Rule
     public function skipRule()
     {
         return $this->skipRule;
+    }
+
+    public function getParams()
+    {
+        return $this->params;
     }
 }
