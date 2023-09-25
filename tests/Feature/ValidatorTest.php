@@ -1,6 +1,5 @@
 <?php
 
-use BitApps\WPValidator\CustomRule;
 use BitApps\WPValidator\Validator;
 
 test('Validation', function () {
@@ -11,7 +10,7 @@ test('Validation', function () {
     ];
     // |between:5,10
     $rules = [
-        'name' => ['required', new CustomRule],
+        'name' => ['required'],
         // 'age' => 'required|integer|new Custom',
         // 'option' => 'required|in:option1,option2,option3',
     ];
