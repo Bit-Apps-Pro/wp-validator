@@ -5,6 +5,11 @@ class NullableRule
 {
     public static function validate($field, $value)
     {
-        return true; // No validation needed, always passes.
+        return true;
+    }
+
+    public function skipRule()
+    {
+        return false;
     }
 }
