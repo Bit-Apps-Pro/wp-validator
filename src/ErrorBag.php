@@ -9,7 +9,9 @@ class ErrorBag
 
     public function addError($field, $rule, $message)
     {
-        $this->errors[$field][$rule] = $message;
+
+        $this->errors[$field][] = $message;
+
     }
 
     public function setCustomMessage($field, $ruleName, $attributeLabel, $paramValues, $params)

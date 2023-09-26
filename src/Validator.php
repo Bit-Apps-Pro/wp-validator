@@ -13,16 +13,16 @@ class Validator
     protected function getValue($field)
     {
         $keys = explode('.', $field);
-        $value = $this->data;
+        $data = $this->data;
 
         while ($keys) {
             $key = array_shift($keys);
 
-            if (isset($value[$key])) {
-                $value = $value[$key];
+            if (isset($data[$key])) {
+                $data = $data[$key];
             }
         }
-        return $value;
+        return $data;
 
     }
 
@@ -57,32 +57,35 @@ class Validator
                 $attributeLabel = $attributeLabels[$field];
             }
 
-            foreach ($rules as $ruleName) {
+            foreach ($rules as $index => $ruleName) {
 
                 list($ruleName, $paramValues) = $this->parseRule($ruleName);
 
                 $ruleClass = $this->resolveRule($ruleName);
 
-                if (!empty($params)) {
-                    $ruleClass->setParameters($paramValues);
+                if (!empty($paramValues)) {
+                    $ruleClass->setParameterValues($paramValues, $ruleClass->getParamKeys());
                 }
 
                 $isValidated = $ruleClass->validate($value);
 
                 if (!$isValidated) {
                     $message = $ruleClass->message($attributeLabel);
+                    // var_dump($messages);
+                    // // exit;
 
                     if (isset($messages[$field][$ruleName])) {
+                        // echo "HI";
                         // $message = $this->errorBag->setCustomMessage($field, $ruleName, $attributeLabel, $paramValues, $ruleClass->getParams());
                         $message = $this->customMessage
                             ->setField($field)
-                            ->setRuleName($ruleName)
+                            ->setRuleName($index)
                             ->setAttributeLabel($attributeLabel)
                             ->setParamValues($paramValues)
-                            ->setRuleParams($ruleClass->getParams())->message();
+                            ->setRuleParams($ruleClass->getParamKeys())->message();
                     }
 
-                    $this->errorBag->addError($field, $ruleName, $message);
+                    $this->errorBag->addError($field, $index, $message);
                     break;
                 }
 

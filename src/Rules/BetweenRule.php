@@ -8,20 +8,21 @@ class BetweenRule extends Rule
 
     protected $message = "The :attribute must be between :min and :max";
 
-    protected $params = ['min', 'max'];
+    protected $requireParameters = ['min', 'max'];
 
-    public function validate($value, $field = null, $params)
+    public function validate($value)
     {
-        $min = $params[0];
-        $max = $params[1];
+        $this->checkRequiredParameter($this->requireParameters);
 
-        // $length = strlen($value);
+        $min = $this->getParameter('min');
+        $max = $this->getParameter('max');
+
         return $value >= $min && $value <= $max;
     }
 
-    public function getParams()
+    public function getParamKeys()
     {
-        return $this->params;
+        return $this->requireParameters;
     }
 
     public function message()

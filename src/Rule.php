@@ -3,6 +3,7 @@
 namespace BitApps\WPValidator;
 
 use BitApps\WPValidator\RequiredParameterMissingException;
+use Exception;
 
 abstract class Rule
 {
@@ -11,9 +12,11 @@ abstract class Rule
 
     protected $skipRule = true;
 
+    protected $paramKeys = [];
+
     abstract public function validate($value);
 
-    protected function requireParameters(array $params)
+    protected function checkRequiredParameter($params)
     {
         foreach ($params as $param) {
             if (!isset($this->params[$param])) {
@@ -27,14 +30,27 @@ abstract class Rule
         return $this->skipRule;
     }
 
-    public function getParams()
+    public function getParamKeys()
     {
-        return $this->params;
+        $this->paramKeys;
     }
 
-    public function setParameters($params)
+    public function setParameterValues($paramValues, $paramKeys)
     {
-        $this->params = array_merge($this->params, $params);
-        return $this;
+        if (count($paramKeys) === count($paramValues)) {
+            $this->params = array_combine($paramKeys, $paramValues);
+            return $this;
+        }
+
+        throw new Exception('missMatch params');
     }
+
+    public function getParameter($key)
+    {
+        if (isset($this->params[$key])) {
+            return $this->params[$key];
+        }
+        return null;
+    }
+
 }
