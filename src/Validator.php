@@ -70,7 +70,7 @@ class Validator
                 $isValidated = $ruleClass->validate($value);
 
                 if (!$isValidated) {
-                    $message = $ruleClass->message($attributeLabel);
+                    $message = $ruleClass->message();
 
                     if (isset($messages[$field][$ruleName])) {
                         // echo "HI";
