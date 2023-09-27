@@ -15,6 +15,8 @@ abstract class Rule
 
     abstract public function validate($value);
 
+    abstract public function message();
+
     protected function checkRequiredParameter($params)
     {
         foreach ($params as $param) {
@@ -41,7 +43,7 @@ abstract class Rule
             return $this;
         }
 
-        throw new Exception('missMatch params');
+        // throw new Exception('missMatch params');
     }
 
     public function getParameter($key)
