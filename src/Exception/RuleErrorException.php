@@ -1,6 +1,6 @@
 <?php
 
-namespace BitApps\WPValidator;
+namespace BitApps\WPValidator\Exception;
 
 class RuleErrorException extends \Exception
 
