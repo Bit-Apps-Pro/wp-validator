@@ -64,15 +64,13 @@ class Validator
                 $ruleClass = $this->resolveRule($ruleName);
 
                 if (!empty($paramValues)) {
-                    $ruleClass->setParameterValues($paramValues, $ruleClass->getParamKeys());
+                    $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);
                 }
 
                 $isValidated = $ruleClass->validate($value);
 
                 if (!$isValidated) {
                     $message = $ruleClass->message($attributeLabel);
-                    // var_dump($messages);
-                    // // exit;
 
                     if (isset($messages[$field][$ruleName])) {
                         // echo "HI";
