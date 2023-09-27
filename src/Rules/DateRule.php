@@ -1,9 +1,11 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class DateRule
+use BitApps\WPValidator\Rule;
+
+class DateRule extends Rule
 {
-    public static function validate($field, $value)
+    public function validate($value)
     {
         return strtotime($value) !== false;
     }

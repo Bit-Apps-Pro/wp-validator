@@ -1,10 +1,20 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class MinRule
+use BitApps\WPValidator\Rule;
+
+class MinRule extends Rule
 {
-    public static function validate($field, $value, $min)
+
+    protected $requireParameters = ['min'];
+
+    public function validate($value)
     {
+
+        $this->checkRequiredParameter($this->requireParameters);
+
+        $min = $this->getParameter('min');
+
         return strlen($value) >= $min;
     }
 }

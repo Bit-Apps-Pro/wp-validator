@@ -1,9 +1,11 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class EmailRule
+use BitApps\WPValidator\Rule;
+
+class EmailRule extends Rule
 {
-    public static function validate($field, $value)
+    public function validate($value)
     {
         return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
     }

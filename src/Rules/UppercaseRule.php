@@ -1,9 +1,11 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class UppercaseRule
+use BitApps\WPValidator\Rule;
+
+class UppercaseRule extends Rule
 {
-    public static function validate($field, $value)
+    public function validate($value)
     {
         return $value === strtoupper($value);
     }

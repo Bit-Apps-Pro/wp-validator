@@ -7,17 +7,20 @@ class MaxRule extends Rule
 {
     protected $message = "The :attribute must not exceed a specified maximum :max.";
 
-    protected $params = ['max'];
+    protected $requireParameters = ['max'];
 
-    public function validate($value, $field = null, $params)
+    public function validate($value)
     {
-        $max = $params[0];
+        $this->checkRequiredParameter($this->requireParameters);
+
+        $max = $this->getParameter('max');
+
         return strlen($value) <= $max;
     }
 
-    public function getParams()
+    public function getParamKeys()
     {
-        return $this->params;
+        return $this->requireParameters;
     }
 
     public function message()

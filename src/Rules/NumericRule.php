@@ -1,8 +1,11 @@
 <?php
+namespace BitApps\WPValidator\Rules;
 
-class NumericRule
+use BitApps\WPValidator\Rule;
+
+class NumericRule extends Rule
 {
-    public static function validate($field, $value)
+    public function validate($value)
     {
         return is_numeric($value);
     }

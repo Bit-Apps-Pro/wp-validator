@@ -2,11 +2,13 @@
 
 namespace BitApps\WPValidator\Rules;
 
-class AcceptedRule
+use BitApps\WPValidator\Rule;
+
+class AcceptedRule extends Rule
 {
-    public static function validate($field, $value)
+    public function validate($value)
     {
-        $accepted = ['yes', 'on', '1', 1, true];
+        $accepted = ['yes', 'on', '1', 1, true, 'true'];
         return in_array($value, $accepted, true);
     }
 }

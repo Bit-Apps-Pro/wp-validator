@@ -1,9 +1,11 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class ArrayRule
+use BitApps\WPValidator\Rule;
+
+class ArrayRule extends Rule
 {
-    public static function validate($field, $value)
+    public function validate($value)
     {
         return is_array($value);
     }

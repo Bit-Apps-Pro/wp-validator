@@ -2,14 +2,15 @@
 
 namespace BitApps\WPValidator\Rules;
 
-class StringRule
+use BitApps\WPValidator\Rule;
+
+class StringRule extends Rule
 {
     protected $message = "The :attribute field should be string";
     protected static $attribute;
 
-    public static function validate($value, $field = null)
+    public function validate($value)
     {
-        static::$attribute = $field;
         return is_string($value);
     }
 

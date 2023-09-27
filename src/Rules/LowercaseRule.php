@@ -1,9 +1,11 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class LowercaseRule
+use BitApps\WPValidator\Rule;
+
+class LowercaseRule extends Rule
 {
-    public static function validate($field, $value)
+    public function validate($value)
     {
         return $value === strtolower($value);
     }

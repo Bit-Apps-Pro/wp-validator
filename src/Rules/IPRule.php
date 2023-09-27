@@ -1,9 +1,11 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class IPRule
+use BitApps\WPValidator\Rule;
+
+class IPRule extends Rule
 {
-    public static function validate($field, $value)
+    public function validate($value)
     {
         return filter_var($value, FILTER_VALIDATE_IP) !== false;
     }

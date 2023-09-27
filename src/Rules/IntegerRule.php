@@ -1,15 +1,16 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class IntegerRule
+use BitApps\WPValidator\Rule;
+
+class IntegerRule extends Rule
 {
     protected $message = "The :attribute field should be integer";
 
     protected static $attribute;
 
-    public static function validate($value, $field = null)
+    public function validate($value)
     {
-        static::$attribute = $field;
         return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }
 

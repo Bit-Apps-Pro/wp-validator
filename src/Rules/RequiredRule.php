@@ -10,15 +10,8 @@ class RequiredRule extends Rule
 
     protected static $attribute;
 
-    public function validate($value, $field = null, $params = [])
+    public function validate($value)
     {
-        // if (is_string($value)) {
-        //     return !mb_strlen(trim($value), 'UTF-8') > 0;
-        // }
-        // if (is_array($value)) {
-        //     return !count($value) > 0;
-        // }
-        // return is_null($value);
         return !empty($value);
     }
 
@@ -27,15 +20,4 @@ class RequiredRule extends Rule
         return str_replace(":attribute", $attributeLabel, $this->message);
         // return $this->message();
     }
-    // public function ab()
-    // {
-    //     $data = [
-    //         'name' => [
-    //             'required' => 'The Name field is required',
-    //         ],
-    //         'age' => [
-    //             'required' => 'The Name field is required',
-    //         ],
-    //     ];
-    // }
 }
