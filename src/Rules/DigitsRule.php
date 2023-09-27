@@ -5,12 +5,27 @@ use BitApps\WPValidator\Rule;
 
 class DigitsRule extends Rule
 {
+    private $message = "The :attribute must be :digits digits";
+
+    private $requireParameters = ['digits'];
+
     public function validate($value)
     {
+        $this->checkRequiredParameter($this->requireParameters);
 
-        $length = (int) $this->getParameter('length') ? 0 : 0;
+        $digitCount = (int) $this->getParameter('digits') ? 0 : 0;
 
-        return !preg_match('/[^0-9]/', $value) && strlen((string) $value) === $length;
+        return !preg_match('/[^0-9]/', $value) && strlen((string) $value) === $digitCount;
 
+    }
+
+    public function getParamKeys()
+    {
+        return $this->requireParameters;
+    }
+
+    public function message()
+    {
+        $this->message;
     }
 }

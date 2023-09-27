@@ -7,6 +7,7 @@ use BitApps\WPValidator\Rule;
 class StringRule extends Rule
 {
     protected $message = "The :attribute field should be string";
+
     protected static $attribute;
 
     public function validate($value)

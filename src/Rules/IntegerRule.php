@@ -5,9 +5,7 @@ use BitApps\WPValidator\Rule;
 
 class IntegerRule extends Rule
 {
-    protected $message = "The :attribute field should be integer";
-
-    protected static $attribute;
+    private $message = "The :attribute must be an integer";
 
     public function validate($value)
     {
@@ -16,7 +14,7 @@ class IntegerRule extends Rule
 
     public function message()
     {
-        return str_replace(":attribute", static::$attribute, $this->message);
+        return $this->message;
     }
 
 }

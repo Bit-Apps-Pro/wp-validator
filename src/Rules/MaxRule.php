@@ -5,7 +5,7 @@ use BitApps\WPValidator\Rule;
 
 class MaxRule extends Rule
 {
-    protected $message = "The :attribute must not exceed a specified maximum :max.";
+    protected $message = "The :attribute may not be greater than :max characters";
 
     protected $requireParameters = ['max'];
 

@@ -6,7 +6,7 @@ use BitApps\WPValidator\Rule;
 class RequiredRule extends Rule
 {
 
-    protected $message = 'The :attribute field is required';
+    private $message = 'The :attribute field is required';
 
     protected static $attribute;
 
@@ -15,9 +15,9 @@ class RequiredRule extends Rule
         return !empty($value);
     }
 
-    public function message($attributeLabel)
+    public function message()
     {
-        return str_replace(":attribute", $attributeLabel, $this->message);
-        // return $this->message();
+        // return str_replace(":attribute", $attributeLabel, $this->message);
+        return $this->message;
     }
 }

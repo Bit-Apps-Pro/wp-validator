@@ -6,6 +6,8 @@ use BitApps\WPValidator\Rule;
 class MinRule extends Rule
 {
 
+    private $message = "The :attribute must be at least :min characters";
+
     protected $requireParameters = ['min'];
 
     public function validate($value)
@@ -16,5 +18,10 @@ class MinRule extends Rule
         $min = $this->getParameter('min');
 
         return strlen($value) >= $min;
+    }
+
+    public function message()
+    {
+        $this->message;
     }
 }

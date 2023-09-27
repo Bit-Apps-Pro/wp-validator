@@ -3,7 +3,7 @@ namespace BitApps\WPValidator\Rules;
 
 class NullableRule
 {
-    public function validate($value = null)
+    public function validate($value)
     {
         return true;
     }
