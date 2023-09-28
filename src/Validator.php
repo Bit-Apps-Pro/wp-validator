@@ -40,10 +40,10 @@ class Validator
 
             foreach ($rules as $ruleName) {
 
-                list($ruleName, $paramValues) = $this->parseRule($ruleName, $inputContainer);
+                list($ruleName, $paramValues) = $this->parseRule($ruleName);
                 $ruleClass = $this->resolveRule($ruleName);
                 $ruleClass->setInputDataContainer($inputContainer);
-                $ruleClass->setRuleName($ruleName);
+                $ruleClass->setRuleName($ruleName);               
 
                 if (!empty($paramValues)) {
                     $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);

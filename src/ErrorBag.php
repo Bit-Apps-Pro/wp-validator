@@ -10,14 +10,14 @@ class ErrorBag
     {
         $attributeKey = $role->getInputDataContainer()->getAttributeKey();
         $roleName = $role->getRuleName();
-        $params = $role->getParamKeys();
+        $paramValues = $role->getParamValues();
 
         $defaultPlaceholders = [
             'attribute' => $role->getInputDataContainer()->getAttributeLabel(),
             'value' => $role->getInputDataContainer()->getAttributeValue(),
         ];
 
-        $placeholders = array_merge($params, $defaultPlaceholders);
+        $placeholders = array_merge($paramValues, $defaultPlaceholders);
 
         if (isset($customMessages[$attributeKey][$roleName])) {
             $message = $this->replacePlaceholders($placeholders, $customMessages[$attributeKey][$roleName]);
@@ -33,6 +33,9 @@ class ErrorBag
     {
         foreach ($placeholders as $key => $placeholder) {
             if (isset($placeholders[$key])) {
+                if (is_array($placeholder)) {
+                    $placeholder = implode(',', $placeholder);
+                }
                 $message = str_replace(":" . $key, $placeholder, $message);
             }
         }
