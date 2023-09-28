@@ -6,16 +6,29 @@ use BitApps\WPValidator\Exception\RequiredParameterMissingException;
 
 abstract class Rule
 {
+    private $inputDataContainer;
+    
+    private $params = [];
 
-    protected $params = [];
+    private $skipRule = true;
 
-    protected $skipRule = true;
+    private $paramKeys = [];
 
-    protected $paramKeys = [];
+    private $roleName;
 
     abstract public function validate($value);
 
     abstract public function message();
+
+    public function getInputDataContainer()
+    {
+        return $this->inputDataContainer;
+    }
+
+    public function setInputDataContainer($inputDataContainer)
+    {
+        $this->inputDataContainer = $inputDataContainer;
+    }
 
     protected function checkRequiredParameter($params)
     {
@@ -33,17 +46,14 @@ abstract class Rule
 
     public function getParamKeys()
     {
-        $this->paramKeys;
+        return $this->paramKeys;
     }
 
     public function setParameterValues($paramKeys, $paramValues)
     {
         if (count($paramKeys) === count($paramValues)) {
             $this->params = array_combine($paramKeys, $paramValues);
-            return $this;
         }
-
-        // throw new Exception('missMatch params');
     }
 
     public function getParameter($key)
@@ -52,6 +62,16 @@ abstract class Rule
             return $this->params[$key];
         }
         return null;
+    }
+
+    public function setRuleName($ruleName)
+    {
+        $this->roleName = $ruleName;
+    }
+
+    public function getRuleName()
+    {
+        return $this->roleName;
     }
 
 }
