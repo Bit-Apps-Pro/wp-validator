@@ -5,36 +5,42 @@ namespace BitApps\WPValidator;
 class ErrorBag
 {
     protected $errors = [];
-    // public $customMessages;
 
-    public function addError($field, $rule, $message)
+    public function addError($role, $customMessages)
     {
+        $attributeKey = $role->getInputDataContainer()->getAttributeKey();
+        $roleName = $role->getRuleName();
+        $params = $role->getParamKeys();
 
-        $this->errors[$field][] = $message;
+        $defaultPlaceholders = [
+            'attribute' => $role->getInputDataContainer()->getAttributeLabel(),
+            'value' => $role->getInputDataContainer()->getAttributeValue(),
+        ];
+
+        $placeholders = array_merge($params, $defaultPlaceholders);
+
+        if (isset($customMessages[$attributeKey][$roleName])) {
+            $message = $this->replacePlaceholders($placeholders, $customMessages[$attributeKey][$roleName]);
+        } else {
+            $message = $this->replacePlaceholders($placeholders, $role->message());
+        }
+
+        $this->errors[$attributeKey][] = $message;
 
     }
 
-    public function setCustomMessage($field, $ruleName, $attributeLabel, $paramValues, $params)
+    private function replacePlaceholders($placeholders, $message)
     {
-        // if (isset($this->customMessages[$field][$ruleName])) {
-        //     $message = str_replace(":attribute", $attributeLabel, $this->customMessages[$field][$ruleName]);
-        //     foreach ($params as $key => $param) {
-        //         if (isset($paramValues[$key])) {
-
-        //             $message = str_replace(":" . $param, $paramValues[$key], $message);
-        //         }
-        //     }
-        //     return $this->messages[$field][$ruleName] = $message;
-        // }
+        foreach ($placeholders as $key => $placeholder) {
+            if (isset($placeholders[$key])) {
+                $message = str_replace(":" . $key, $placeholder, $message);
+            }
+        }
+        return $message;
     }
 
     public function getErrors($field = null)
     {
-        // if ($field === null) {
-        //     return $this->messages;
-        // }
-
-        // return $this->messages[$field] ?? [];
         return $this->errors;
     }
 
