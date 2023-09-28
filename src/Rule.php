@@ -7,7 +7,7 @@ use BitApps\WPValidator\Exception\RequiredParameterMissingException;
 abstract class Rule
 {
     private $inputDataContainer;
-    
+
     private $params = [];
 
     private $skipRule = true;
@@ -72,6 +72,11 @@ abstract class Rule
     public function getRuleName()
     {
         return $this->roleName;
+    }
+
+    public function getParamValues()
+    {
+        return $this->params;
     }
 
 }
