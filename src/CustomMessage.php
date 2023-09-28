@@ -48,7 +48,6 @@ class CustomMessage
 
     public function message()
     {
-        var_dump($this->messages);
         if (isset($this->messages[$this->field][$this->ruleName])) {
             $message = str_replace(":attribute", $this->attributeLabel, $this->messages[$this->field][$this->ruleName]);
             foreach ($this->ruleParams as $key => $param) {
