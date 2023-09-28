@@ -8,8 +8,6 @@ class RequiredRule extends Rule
 
     private $message = 'The :attribute field is required';
 
-    protected static $attribute;
-
     public function validate($value)
     {
         return !empty($value);
@@ -17,7 +15,6 @@ class RequiredRule extends Rule
 
     public function message()
     {
-        // return str_replace(":attribute", $attributeLabel, $this->message);
         return $this->message;
     }
 }

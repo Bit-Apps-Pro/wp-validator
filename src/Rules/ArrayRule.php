@@ -7,6 +7,7 @@ class ArrayRule extends Rule
 {
     private $message = "The :attribute must be array";
 
+
     public function validate($value)
     {
         return is_array($value);
@@ -14,6 +15,6 @@ class ArrayRule extends Rule
 
     public function message()
     {
-        $this->message;
+        return $this->message;
     }
 }

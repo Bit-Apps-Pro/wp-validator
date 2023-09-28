@@ -1,9 +1,12 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class IP6Rule
+use BitApps\WPValidator\Rule;
+
+class IP6Rule extends Rule
 {
     private $message = "The :attribute must be a valid IPv6 address";
+
 
     public function validate($value)
     {
@@ -12,6 +15,6 @@ class IP6Rule
 
     public function message()
     {
-        $this->message;
+        return $this->message;
     }
 }

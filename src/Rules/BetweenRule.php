@@ -10,6 +10,7 @@ class BetweenRule extends Rule
 
     protected $requireParameters = ['min', 'max'];
 
+
     public function validate($value)
     {
         $this->checkRequiredParameter($this->requireParameters);

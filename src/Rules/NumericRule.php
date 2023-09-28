@@ -5,7 +5,8 @@ use BitApps\WPValidator\Rule;
 
 class NumericRule extends Rule
 {
-    private $message = "";
+    private $message = "The :attribute must be a number";
+
 
     public function validate($value)
     {
@@ -14,6 +15,6 @@ class NumericRule extends Rule
 
     public function message()
     {
-        $this->message;
+        return $this->message;
     }
 }

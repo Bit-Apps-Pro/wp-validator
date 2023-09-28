@@ -12,7 +12,6 @@ class MinRule extends Rule
 
     public function validate($value)
     {
-
         $this->checkRequiredParameter($this->requireParameters);
 
         $min = $this->getParameter('min');

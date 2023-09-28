@@ -9,6 +9,7 @@ class MaxRule extends Rule
 
     protected $requireParameters = ['max'];
 
+
     public function validate($value)
     {
         $this->checkRequiredParameter($this->requireParameters);

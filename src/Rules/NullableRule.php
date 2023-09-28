@@ -1,7 +1,9 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
-class NullableRule
+use BitApps\WPValidator\Rule;
+
+class NullableRule extends Rule
 {
     public function validate($value)
     {
@@ -11,5 +13,9 @@ class NullableRule
     public function skipRule()
     {
         return false;
+    }
+
+    public function message(){
+        return ''; 
     }
 }
