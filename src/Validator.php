@@ -4,33 +4,11 @@ namespace BitApps\WPValidator;
 
 class Validator
 {
-    protected $data;
-    protected $rules = [];
-    protected $errors = [];
     protected $errorBag;
-    protected $customMessage;
-
-    protected function getValue($field)
-    {
-        $keys = explode('.', $field);
-        $data = $this->data;
-
-        while ($keys) {
-            $key = array_shift($keys);
-
-            if (isset($data[$key])) {
-                $data = $data[$key];
-            }
-        }
-        return $data;
-
-    }
 
     public function parseRule($rule)
     {
-
         $exp = explode(':', $rule, 2);
-
         $ruleName = $exp[0];
         $params = [];
 
@@ -49,9 +27,8 @@ class Validator
         $this->errorBag = new ErrorBag();
 
         foreach ($ruleFields as $field => $rules) {
+           
             $attributeLabel = $field;
-
-            $value = $this->getValue($field);
 
             if (isset($attributeLabels[$field])) {
                 $attributeLabel = $attributeLabels[$field];
@@ -86,7 +63,7 @@ class Validator
 
     public function fails()
     {
-        return !empty($this->errors) ? true : false;
+        return !empty($this->errorBag->getErrors()) ? true : false;
     }
 
     public function errors()
