@@ -15,11 +15,25 @@
             "BitApps\\WPValidator\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+          "BitApps\\WPValidator\\Test\\": "tests/"
+        }
+      },
     "scripts":{
-        "test":"./vendor/bin/pest tests/Feature/ValidatorTest.php"
+        "test:unit":"./vendor/bin/pest",
+        "compat": "./vendor/bin/phpcs  -p ./src --standard=PHPCompatibility --runtime-set testVersion 5.6",
+        "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility",
+        "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility"
     },
+    "require": {
+        "php": ">=5.6"
+      },
+    
     "require-dev": {
-        "pestphp/pest": "^2.18"
+        "pestphp/pest": "^2.18",
+        "squizlabs/php_codesniffer":"*",
+        "phpcompatibility/php-compatibility": "*"
     },
 
     "config": {
