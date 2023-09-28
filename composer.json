@@ -1,0 +1,44 @@
+{
+    "name": "bitapps/wp-validator",
+    "description": "PHP Validation and Sanitization Library",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+          "email": "developer@bitcode.pro",
+          "name": "BitApps"
+        }
+      ],
+    "autoload": {
+        "psr-4": {
+            "BitApps\\WPValidator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+          "BitApps\\WPValidator\\Test\\": "tests/"
+        }
+      },
+    "scripts":{
+        "test:unit":"./vendor/bin/pest",
+        "compat": "./vendor/bin/phpcs  -p ./src --standard=PHPCompatibility --runtime-set testVersion 5.6",
+        "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility",
+        "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility"
+    },
+    "require": {
+        "php": ">=5.6"
+      },
+    
+    "require-dev": {
+        "pestphp/pest": "^2.18",
+        "squizlabs/php_codesniffer":"*",
+        "phpcompatibility/php-compatibility": "*"
+    },
+
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": false
+        }
+    }
+}
