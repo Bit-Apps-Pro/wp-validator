@@ -22,8 +22,12 @@ class InputDataContainer
         return $this->attributeKey;
     }
 
-    public function getAttributeValue()
+    public function getAttributeValue($key=null)
     {
+        if(isset($this->data[$key])){
+            return $this->data[$key];
+        }
+
         if(isset($this->data[$this->attributeKey])){
             return $this->data[$this->attributeKey];
         }
