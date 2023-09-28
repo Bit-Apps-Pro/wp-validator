@@ -42,11 +42,11 @@ class Validator
 
     }
 
-    public function make($data, $ruleFields, $messages = null, $attributeLabels = null)
+    public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null)
     {
-        $this->data = $data;
+        $inputContainer = new InputDataContainer($data);
+
         $this->errorBag = new ErrorBag();
-        $this->customMessage = new CustomMessage($messages);
 
         foreach ($ruleFields as $field => $rules) {
             $attributeLabel = $field;
@@ -57,33 +57,25 @@ class Validator
                 $attributeLabel = $attributeLabels[$field];
             }
 
-            foreach ($rules as $index => $ruleName) {
+            $inputContainer->setAttributeKey($field);
 
-                list($ruleName, $paramValues) = $this->parseRule($ruleName);
+            $inputContainer->setAttributeLabel($attributeLabel);
 
+            foreach ($rules as $ruleName) {
+
+                list($ruleName, $paramValues) = $this->parseRule($ruleName, $inputContainer);
                 $ruleClass = $this->resolveRule($ruleName);
+                $ruleClass->setInputDataContainer($inputContainer);
+                $ruleClass->setRuleName($ruleName);
 
                 if (!empty($paramValues)) {
                     $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);
                 }
 
-                $isValidated = $ruleClass->validate($value);
+                $isValidated = $ruleClass->validate($inputContainer->getAttributeValue());
 
-                if (!$isValidated) {
-                    $message = $ruleClass->message();
-
-                    if (isset($messages[$field][$ruleName])) {
-                        // echo "HI";
-                        // $message = $this->errorBag->setCustomMessage($field, $ruleName, $attributeLabel, $paramValues, $ruleClass->getParams());
-                        $message = $this->customMessage
-                            ->setField($field)
-                            ->setRuleName($index)
-                            ->setAttributeLabel($attributeLabel)
-                            ->setParamValues($paramValues)
-                            ->setRuleParams($ruleClass->getParamKeys())->message();
-                    }
-
-                    $this->errorBag->addError($field, $index, $message);
+                if (!$isValidated && $ruleClass->skipRule()) {
+                    $this->errorBag->addError($ruleClass, $customMessages);
                     break;
                 }
 
@@ -104,9 +96,9 @@ class Validator
 
     protected function resolveRule($ruleName)
     {
-
         if (is_string($ruleName)) {
-            $ruleClass = "BitApps\WPValidator\\Rules\\" . str_replace(' ', '', ucwords($ruleName)) . 'Rule';
+            $ruleClass = "BitApps\WPValidator\\Rules\\" . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
+            
             if (!class_exists($ruleClass)) {
                 throw new RuleErrorException("Unsupported validation rule: $ruleName");
             }
