@@ -33,6 +33,9 @@ class ErrorBag
     {
         foreach ($placeholders as $key => $placeholder) {
             if (isset($placeholders[$key])) {
+                if (is_array($placeholder)) {
+                    $placeholder = implode(',', $placeholder);
+                }
                 $message = str_replace(":" . $key, $placeholder, $message);
             }
         }
