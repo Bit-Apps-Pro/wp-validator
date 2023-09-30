@@ -14,7 +14,7 @@ class MinRule extends Rule
     {
         $this->checkRequiredParameter($this->requireParameters);
 
-        $min = $this->getParameter('min');
+        $min = (int) $this->getParameter('min');
 
         return strlen($value) >= $min;
     }

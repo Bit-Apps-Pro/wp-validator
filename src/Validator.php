@@ -2,6 +2,8 @@
 
 namespace BitApps\WPValidator;
 
+use BitApps\WPValidator\Exception\RuleErrorException;
+
 class Validator
 {
     protected $errorBag;
@@ -27,7 +29,7 @@ class Validator
         $this->errorBag = new ErrorBag();
 
         foreach ($ruleFields as $field => $rules) {
-           
+
             $attributeLabel = $field;
 
             if (isset($attributeLabels[$field])) {
@@ -43,7 +45,7 @@ class Validator
                 list($ruleName, $paramValues) = $this->parseRule($ruleName);
                 $ruleClass = $this->resolveRule($ruleName);
                 $ruleClass->setInputDataContainer($inputContainer);
-                $ruleClass->setRuleName($ruleName);               
+                $ruleClass->setRuleName($ruleName);
 
                 if (!empty($paramValues)) {
                     $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);
@@ -75,7 +77,7 @@ class Validator
     {
         if (is_string($ruleName)) {
             $ruleClass = "BitApps\WPValidator\\Rules\\" . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
-            
+
             if (!class_exists($ruleClass)) {
                 throw new RuleErrorException("Unsupported validation rule: $ruleName");
             }
@@ -92,32 +94,3 @@ class Validator
     }
 
 }
-
-// $validator = (new Validator)->make($requestData, $rules, $customMessages, $attributeLabel);
-
-//File Create with request
-//old package rules feature
-
-#current rules in boiler plate
-// Required
-// Numeric
-// Integer
-// Ip
-// Ipv4
-// Ipv6
-// MacAddress
-// Json
-// Array
-// ArrayOfString
-// Email
-// URL
-// String
-// Date
-// Min
-// Max
-// Nullable
-// Boolean
-// Accepted
-// Timezone
-// Uppercase
-// LowerCase
