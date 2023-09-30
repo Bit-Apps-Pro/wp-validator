@@ -16,6 +16,6 @@ class JsonRule extends Rule
 
     public function message()
     {
-        $this->message;
+        return $this->message;
     }
 }
