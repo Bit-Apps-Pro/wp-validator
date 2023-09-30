@@ -19,6 +19,11 @@ class MinRule extends Rule
         return strlen($value) >= $min;
     }
 
+    public function getParamKeys()
+    {
+        return $this->requireParameters;
+    }
+
     public function message()
     {
         return $this->message;
