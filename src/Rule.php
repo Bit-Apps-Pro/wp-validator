@@ -2,7 +2,7 @@
 
 namespace BitApps\WPValidator;
 
-use BitApps\WPValidator\Exception\RequiredParameterMissingException;
+use InvalidArgumentException;
 
 abstract class Rule
 {
@@ -34,7 +34,9 @@ abstract class Rule
     {
         foreach ($params as $param) {
             if (!isset($this->params[$param])) {
-                throw new RequiredParameterMissingException("An error occurred due to a missing parameter.");
+                $ruleName = $this->getRuleName();
+                $parameterCount = count($params);
+                throw new InvalidArgumentException("Validation rule $ruleName requires at least $parameterCount parameters");
             }
         }
     }
