@@ -39,7 +39,7 @@ This PHP package provides a comprehensive solution for input validation and sani
 24. `url`
 
 ## Example Usage
-To use the BitApps WPValidator package for data validation in your Laravel application, follow these steps:
+To use the wp-validator package for data validation in your PHP application, follow these steps:
 ### 1. Install the Package
 First, install the package using Composer:
 ```php
