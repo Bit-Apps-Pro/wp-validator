@@ -21,6 +21,8 @@ class ErrorBag
 
         if (isset($customMessages[$attributeKey][$roleName])) {
             $message = $this->replacePlaceholders($placeholders, $customMessages[$attributeKey][$roleName]);
+        } elseif (isset($customMessages[$roleName])) {
+            $message = $this->replacePlaceholders($placeholders, $customMessages[$roleName]);
         } else {
             $message = $this->replacePlaceholders($placeholders, $role->message());
         }

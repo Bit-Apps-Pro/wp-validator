@@ -7,7 +7,6 @@ class NumericRule extends Rule
 {
     private $message = "The :attribute must be a number";
 
-
     public function validate($value)
     {
         return is_numeric($value);
