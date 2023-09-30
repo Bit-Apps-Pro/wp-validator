@@ -5,7 +5,6 @@ use BitApps\WPValidator\Rule;
 
 class SizeRule extends Rule
 {
-
     private $message = "The :attribute field must be :size characters";
 
     protected $requireParameters = ['size'];

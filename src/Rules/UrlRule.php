@@ -5,9 +5,7 @@ use BitApps\WPValidator\Rule;
 
 class UrlRule extends Rule
 {
-
     private $message = "The :attribute format is invalid";
-
 
     public function validate($value)
     {

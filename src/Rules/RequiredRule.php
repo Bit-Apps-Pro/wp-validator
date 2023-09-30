@@ -5,7 +5,6 @@ use BitApps\WPValidator\Rule;
 
 class RequiredRule extends Rule
 {
-
     private $message = 'The :attribute field is required';
 
     public function validate($value)

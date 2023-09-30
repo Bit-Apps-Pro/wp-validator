@@ -5,7 +5,6 @@ use BitApps\WPValidator\Rule;
 
 class SameRule extends Rule
 {
-
     private $message = "The :attribute and :other must match";
 
     protected $requireParameters = ['other'];
@@ -16,12 +15,12 @@ class SameRule extends Rule
 
         $otherValue = $this->getInputDataContainer()->getAttributeValue($this->getParameter('other'));
 
-        return $value===$otherValue;
+        return $value === $otherValue;
     }
 
     public function getParamKeys()
     {
-        return $this->requireParameters; 
+        return $this->requireParameters;
     }
 
     public function message()

@@ -5,9 +5,7 @@ use BitApps\WPValidator\Rule;
 
 class UppercaseRule extends Rule
 {
-
     private $message = "The :attribute must be in uppercase";
-
 
     public function validate($value)
     {
