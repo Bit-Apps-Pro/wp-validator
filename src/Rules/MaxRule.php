@@ -13,7 +13,7 @@ class MaxRule extends Rule
     {
         $this->checkRequiredParameter($this->requireParameters);
 
-        $max = $this->getParameter('max');
+        $max = (int) $this->getParameter('max');
 
         return strlen($value) <= $max;
     }
