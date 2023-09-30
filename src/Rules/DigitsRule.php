@@ -13,9 +13,9 @@ class DigitsRule extends Rule
     {
         $this->checkRequiredParameter($this->requireParameters);
 
-        $digitCount = (int) $this->getParameter('digits') ? 0 : 0;
+        $digitCount = $this->getParameter('digits') ? $this->getParameter('digits') : 0;
 
-        return !preg_match('/[^0-9]/', $value) && strlen((string) $value) === $digitCount;
+        return !preg_match('/[^0-9]/', $value) && strlen((string) $value) === (int) $digitCount;
 
     }
 
@@ -26,6 +26,6 @@ class DigitsRule extends Rule
 
     public function message()
     {
-        $this->message;
+        return $this->message;
     }
 }

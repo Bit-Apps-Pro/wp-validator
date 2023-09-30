@@ -9,8 +9,9 @@ test('max', function () {
     $paramKeys = ['max'];
     $paramValues = [5];
 
-    expect(true)->toBe($rule->setParameterValues($paramKeys, $paramValues)->validate('110'));
-    expect(true)->toBe($rule->setParameterValues($paramKeys, $paramValues)->validate('passw'));
+    $rule->setParameterValues($paramKeys, $paramValues);
+    expect(true)->toBe($rule->validate('110'));
+    expect(true)->toBe($rule->validate('passw'));
     // expect(true)->toBe($rule->setParameterValues($paramKeys, $paramValues)->validate([4, 5, 6]));
 
 });

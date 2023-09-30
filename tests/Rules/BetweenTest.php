@@ -7,6 +7,7 @@ test('between', function () {
     $rule = new BetweenRule();
     $paramKeys = ['min', 'max'];
     $paramValues = [10, 15];
-    expect(true)->toBe($rule->setParameterValues($paramKeys, $paramValues)->validate(11));
+    $rule->setParameterValues($paramKeys, $paramValues);
+    expect(true)->toBe($rule->validate(11));
 
 });
