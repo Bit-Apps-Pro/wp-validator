@@ -22,7 +22,7 @@ class Validator
 
     }
 
-    public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null)
+    public function validate($data, $ruleFields, $customMessages = null, $attributeLabels = null)
     {
         $inputContainer = new InputDataContainer($data);
 
@@ -60,6 +60,8 @@ class Validator
 
             }
         }
+
+        return $this;
 
     }
 
