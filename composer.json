@@ -39,7 +39,7 @@
         "squizlabs/php_codesniffer":"*",
         "phpcompatibility/php-compatibility": "*"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": false
