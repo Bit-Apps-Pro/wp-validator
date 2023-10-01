@@ -21,9 +21,9 @@
         }
     },
     "autoload-dev": {
-        "psr-4": {
-          "BitApps\\WPValidator\\Test\\": "tests/"
-        }
+      "classmap": [
+        "tests/"
+    ]
       },
     "scripts":{
         "test:unit":"./vendor/bin/pest",
