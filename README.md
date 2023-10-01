@@ -95,7 +95,7 @@ Execute the validation using the validate method:
 $validation = $validator->validate($data, $rules, $customMessages, $attributes);
 ```
 
-### 7. Perform Validation
+### 7. Handle Validation Results
 Check if validation fails and, if so, print out the validation errors:
 ```php
 if ($validation->fails()) {
