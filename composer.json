@@ -32,7 +32,8 @@
         "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility"
     },
     "require": {
-        "php": ">=5.6"
+        "php": ">=5.6",
+        "bitapps/wp-validator": "^1.0"
       },
     "require-dev": {
         "pestphp/pest": "^2.18",
