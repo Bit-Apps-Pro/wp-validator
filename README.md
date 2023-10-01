@@ -84,6 +84,8 @@ if ($validation->fails()) {
 }
 ```
 ## Available Validation Rules
+WP Validator provides a comprehensive set of validation rules to suit your needs. Here's a list of available rules:
+
 1. `accepted`
 2. `array`
 3. `between`
@@ -108,8 +110,6 @@ if ($validation->fails()) {
 22. `string`
 23. `uppercase`
 24. `url`
-
-WP Validator provides a comprehensive set of validation rules to suit your needs. Here's a list of available rules:
 
 # Contributing
 We welcome contributions from the community. If you find a bug or have a feature suggestion, please open an issue or submit a pull request.
