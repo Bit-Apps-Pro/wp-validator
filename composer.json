@@ -1,9 +1,14 @@
 {
     "name": "bitapps/wp-validator",
-    "description": "PHP Validation and Sanitization Library",
+    "description": "WordPress input validation library",
     "type": "library",
     "license": "MIT",
     "version": "1.0.0",
+    "keywords": ["validation","form-validation", "input-validation","input-sanitization", "PHP-validation"],
+    "support": {
+      "issues": "https://github.com/Bit-Apps-Pro/wp-validator/issues",
+      "source": "https://github.com/Bit-Apps-Pro/wp-validator"
+    },
     "authors": [
         {
           "email": "developer@bitcode.pro",
