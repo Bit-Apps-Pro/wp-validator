@@ -7,6 +7,7 @@ use BitApps\WPValidator\Exception\RuleErrorException;
 class Validator
 {
     protected $errorBag;
+    protected $inputContainer;
 
     public function parseRule($rule)
     {
@@ -24,7 +25,7 @@ class Validator
 
     public function validate($data, $ruleFields, $customMessages = null, $attributeLabels = null)
     {
-        $inputContainer = new InputDataContainer($data);
+        $this->inputContainer = new InputDataContainer($data);
 
         $this->errorBag = new ErrorBag();
 
@@ -36,22 +37,22 @@ class Validator
                 $attributeLabel = $attributeLabels[$field];
             }
 
-            $inputContainer->setAttributeKey($field);
+            $this->inputContainer->setAttributeKey($field);
 
-            $inputContainer->setAttributeLabel($attributeLabel);
+            $this->inputContainer->setAttributeLabel($attributeLabel);
 
             foreach ($rules as $ruleName) {
 
                 list($ruleName, $paramValues) = $this->parseRule($ruleName);
                 $ruleClass = $this->resolveRule($ruleName);
-                $ruleClass->setInputDataContainer($inputContainer);
+                $ruleClass->setInputDataContainer($this->inputContainer);
                 $ruleClass->setRuleName($ruleName);
 
                 if (!empty($paramValues)) {
                     $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);
                 }
 
-                $isValidated = $ruleClass->validate($inputContainer->getAttributeValue());
+                $isValidated = $ruleClass->validate($this->inputContainer->getAttributeValue());
 
                 if (!$isValidated && $ruleClass->skipRule()) {
                     $this->errorBag->addError($ruleClass, $customMessages);
@@ -63,6 +64,44 @@ class Validator
 
         return $this;
 
+    }
+
+    public function sanitize()
+    {
+        if (empty($this->inputContainer->getData())) {
+            return [];
+        }
+
+        $data = $this->inputContainer->getData();
+
+        foreach ($data as $key => $value) {
+            if (is_string($value)) {
+                $data[$key] = $this->stripAllTags($value);
+            }
+        }
+
+        return $data;
+
+    }
+
+    private function stripAllTags($text, $removeBreaks = false)
+    {
+        if (is_null($text)) {
+            return '';
+        }
+
+        if (!is_scalar($text)) {
+            return '';
+        }
+
+        $text = preg_replace('@<(script|style)[^>]*?>.*?</\\1>@si', '', $text);
+        $text = strip_tags($text);
+
+        if ($removeBreaks) {
+            $text = preg_replace('/[\r\n\t ]+/', ' ', $text);
+        }
+
+        return trim($text);
     }
 
     public function fails()
