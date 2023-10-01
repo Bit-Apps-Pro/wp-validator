@@ -12,32 +12,6 @@ This PHP package provides a comprehensive solution for input validation and sani
 - **Data Sanitization:** Optional data sanitization functions to clean and format data.
 - **Flexible Usage:** Can be used in various PHP frameworks and applications.
 
-## Available Validation Rules
-1. `accepted`
-2. `array`
-3. `between`
-4. `date`
-5. `digit_between:min,max`
-6. `digits:value`
-7. `email`
-8. `integer`
-9. `ip`
-10. `ipv4`
-11. `ipv6`
-12. `json`
-13. `lowercase`
-14. `mac_address`
-15. `max:value`
-16. `min:value`
-17. `nullable`
-18. `numeric`
-19. `required`
-20. `same:field`
-21. `size:value`
-22. `string`
-23. `uppercase`
-24. `url`
-
 ## Example Usage
 To use the wp-validator package for data validation in your PHP application, follow these steps:
 ### 1. Install the Package
@@ -106,6 +80,32 @@ if ($validation->fails()) {
     echo "Success!";
 }
 ```
+## Available Validation Rules
+1. `accepted`
+2. `array`
+3. `between`
+4. `date`
+5. `digit_between:min,max`
+6. `digits:value`
+7. `email`
+8. `integer`
+9. `ip`
+10. `ipv4`
+11. `ipv6`
+12. `json`
+13. `lowercase`
+14. `mac_address`
+15. `max:value`
+16. `min:value`
+17. `nullable`
+18. `numeric`
+19. `required`
+20. `same:field`
+21. `size:value`
+22. `string`
+23. `uppercase`
+24. `url`
+
 # Contributing
 We welcome contributions from the community. If you find a bug or have a feature suggestion, please open an issue or submit a pull request.
 
