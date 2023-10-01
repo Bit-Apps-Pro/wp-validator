@@ -1,6 +1,6 @@
 {
     "name": "bitapps/wp-validator",
-    "description": "WordPress input validation library",
+    "description": "WordPress Validation and Sanitization Library",
     "type": "library",
     "license": "MIT",
     "version": "1.0.0",
