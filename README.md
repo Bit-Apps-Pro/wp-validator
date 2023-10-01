@@ -2,7 +2,9 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-This PHP package provides a comprehensive solution for input validation and sanitation. It allows developers to easily validate user input against various rules and sanitize it to prevent security vulnerabilities.
+## Overview
+
+The WP Validator is a robust PHP package designed to simplify the process of data validation and sanitization. It offers a versatile and user-friendly solution for developers to ensure that user input meets specific criteria and is secure against common vulnerabilities.
 
 
 # Features
@@ -15,7 +17,8 @@ This PHP package provides a comprehensive solution for input validation and sani
 ## Example Usage
 To use the wp-validator package for data validation in your PHP application, follow these steps:
 ### 1. Install the Package
-First, install the package using Composer:
+Start by installing the WP Validator package using Composer:
+
 ```php
 composer require bitapps/wp-validator
 ```
@@ -105,6 +108,8 @@ if ($validation->fails()) {
 22. `string`
 23. `uppercase`
 24. `url`
+
+WP Validator provides a comprehensive set of validation rules to suit your needs. Here's a list of available rules:
 
 # Contributing
 We welcome contributions from the community. If you find a bug or have a feature suggestion, please open an issue or submit a pull request.
