@@ -14,10 +14,10 @@ class BetweenRule extends Rule
     {
         $this->checkRequiredParameter($this->requireParameters);
 
-        $min = $this->getParameter('min');
-        $max = $this->getParameter('max');
+        $min = (int) $this->getParameter('min');
+        $max = (int) $this->getParameter('max');
 
-        return $value >= $min && $value <= $max;
+        return strlen($value) >= $min && strlen($value) <= $max;
     }
 
     public function getParamKeys()
