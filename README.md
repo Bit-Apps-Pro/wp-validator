@@ -69,7 +69,7 @@ $attributes = [
 ### 6. Perform Validation
 Execute the validation using the validate method:
 ```php
-$validation = $validator->validate($data, $rules, $customMessages, $attributes);
+$validation = $validator->make($data, $rules, $customMessages, $attributes);
 ```
 
 ### 7. Handle Validation Results
