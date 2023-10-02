@@ -31,7 +31,7 @@ test('validator', function () {
         'confirm_password' => 'Confirm Password',
     ];
 
-    $validation = $validator->validate($data, $rules, $customMessages, $attributes);
+    $validation = $validator->make($data, $rules, $customMessages, $attributes);
     $errors = $validation->errors();
     expect(true)->toBe($validation->fails(true));
     expect($errors)->toBeArray();
