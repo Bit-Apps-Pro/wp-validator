@@ -5,17 +5,16 @@ use BitApps\WPValidator\Rule;
 
 class NullableRule extends Rule
 {
+
+    private $message = '';
+
     public function validate($value)
     {
         return true;
     }
 
-    public function skipRule()
+    public function message()
     {
-        return false;
-    }
-
-    public function message(){
-        return ''; 
+        return $this->message;
     }
 }

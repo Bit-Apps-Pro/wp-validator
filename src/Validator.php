@@ -6,7 +6,10 @@ use BitApps\WPValidator\Exception\RuleErrorException;
 
 class Validator
 {
+    use Helpers;
+
     protected $errorBag;
+
     protected $inputContainer;
 
     public function parseRule($rule)
@@ -23,7 +26,7 @@ class Validator
 
     }
 
-    public function validate($data, $ruleFields, $customMessages = null, $attributeLabels = null)
+    public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null)
     {
         $this->inputContainer = new InputDataContainer($data);
 
@@ -41,7 +44,13 @@ class Validator
 
             $this->inputContainer->setAttributeLabel($attributeLabel);
 
+            $value = $this->inputContainer->getAttributeValue();
+
             foreach ($rules as $ruleName) {
+
+                if ($ruleName == 'nullable' && $this->isEmpty($value)) {
+                    break;
+                }
 
                 list($ruleName, $paramValues) = $this->parseRule($ruleName);
                 $ruleClass = $this->resolveRule($ruleName);
@@ -54,7 +63,7 @@ class Validator
 
                 $isValidated = $ruleClass->validate($this->inputContainer->getAttributeValue());
 
-                if (!$isValidated && $ruleClass->skipRule()) {
+                if (!$isValidated) {
                     $this->errorBag->addError($ruleClass, $customMessages);
                     break;
                 }
@@ -63,7 +72,6 @@ class Validator
         }
 
         return $this;
-
     }
 
     public function sanitize()
@@ -86,11 +94,7 @@ class Validator
 
     private function stripAllTags($text, $removeBreaks = false)
     {
-        if (is_null($text)) {
-            return '';
-        }
-
-        if (!is_scalar($text)) {
+        if (is_null($text) && !is_scalar($text)) {
             return '';
         }
 

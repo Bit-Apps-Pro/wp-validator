@@ -8,6 +8,7 @@ test('validator', function () {
     $data = [
         'first_name' => 'John',
         'last_name' => '',
+        'phone' => '',
         'email' => 'email@example',
         'password' => '##112233',
         'confirm_password' => '##11223',
@@ -16,6 +17,7 @@ test('validator', function () {
     $rules = [
         'first_name' => ['required', 'string'],
         'last_name' => ['required', 'string'],
+        'phone' => ['nullable', 'integer'],
         'email' => ['required', 'email'],
         'password' => ['required', 'min:8'],
         'confirm_password' => ['required', 'same:password'],
@@ -26,12 +28,13 @@ test('validator', function () {
     $attributes = [
         'first_name' => 'First Name',
         'last_name' => 'Last Name',
+        'phone' => 'Phone',
         'email' => 'Email',
-        'password' => 'B',
+        'password' => 'Password',
         'confirm_password' => 'Confirm Password',
     ];
 
-    $validation = $validator->validate($data, $rules, $customMessages, $attributes);
+    $validation = $validator->make($data, $rules, $customMessages, $attributes);
     $errors = $validation->errors();
     expect(true)->toBe($validation->fails(true));
     expect($errors)->toBeArray();

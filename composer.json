@@ -3,7 +3,7 @@
     "description": "WordPress Validation and Sanitization Library",
     "type": "library",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "keywords": ["validation","form-validation", "input-validation","input-sanitization", "PHP-validation"],
     "support": {
       "issues": "https://github.com/Bit-Apps-Pro/wp-validator/issues",
@@ -26,7 +26,7 @@
     ]
       },
     "scripts":{
-        "test:unit":"./vendor/bin/pest",
+        "test:unit":"./vendor/bin/pest --testdox --colors=always tests/ --exclude-group db",
         "compat": "./vendor/bin/phpcs  -p ./src --standard=PHPCompatibility --runtime-set testVersion 5.6",
         "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility",
         "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility"
