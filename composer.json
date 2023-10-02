@@ -3,7 +3,7 @@
     "description": "WordPress Validation and Sanitization Library",
     "type": "library",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "keywords": ["validation","form-validation", "input-validation","input-sanitization", "PHP-validation"],
     "support": {
       "issues": "https://github.com/Bit-Apps-Pro/wp-validator/issues",
