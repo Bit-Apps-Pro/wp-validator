@@ -10,8 +10,6 @@ abstract class Rule
 
     private $params = [];
 
-    private $skipRule = true;
-
     private $paramKeys = [];
 
     private $roleName;
@@ -39,11 +37,6 @@ abstract class Rule
                 throw new InvalidArgumentException("Validation rule $ruleName requires at least $parameterCount parameters");
             }
         }
-    }
-
-    public function skipRule()
-    {
-        return $this->skipRule;
     }
 
     public function getParamKeys()

@@ -13,11 +13,6 @@ class NullableRule extends Rule
         return true;
     }
 
-    public function skipRule()
-    {
-        return false;
-    }
-
     public function message()
     {
         return $this->message;
