@@ -6,6 +6,8 @@ use BitApps\WPValidator\Exception\RuleErrorException;
 
 class Validator
 {
+    use Helpers;
+
     protected $errorBag;
 
     protected $inputContainer;
@@ -42,7 +44,13 @@ class Validator
 
             $this->inputContainer->setAttributeLabel($attributeLabel);
 
+            $value = $this->inputContainer->getAttributeValue();
+
             foreach ($rules as $ruleName) {
+
+                if ($ruleName == 'nullable' && $this->isEmpty($value)) {
+                    break;
+                }
 
                 list($ruleName, $paramValues) = $this->parseRule($ruleName);
                 $ruleClass = $this->resolveRule($ruleName);
@@ -55,7 +63,7 @@ class Validator
 
                 $isValidated = $ruleClass->validate($this->inputContainer->getAttributeValue());
 
-                if (!$isValidated && $ruleClass->skipRule()) {
+                if (!$isValidated) {
                     $this->errorBag->addError($ruleClass, $customMessages);
                     break;
                 }
