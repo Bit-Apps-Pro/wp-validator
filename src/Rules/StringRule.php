@@ -8,8 +8,6 @@ class StringRule extends Rule
 {
     protected $message = "The :attribute field should be string";
 
-    protected static $attribute;
-
     public function validate($value)
     {
         return is_string($value);
@@ -17,6 +15,6 @@ class StringRule extends Rule
 
     public function message()
     {
-        return str_replace(":attribute", static::$attribute, $this->message);
+        return $this->message;
     }
 }
