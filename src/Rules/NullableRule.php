@@ -5,6 +5,9 @@ use BitApps\WPValidator\Rule;
 
 class NullableRule extends Rule
 {
+
+    private $message = '';
+
     public function validate($value)
     {
         return true;
@@ -15,7 +18,8 @@ class NullableRule extends Rule
         return false;
     }
 
-    public function message(){
-        return ''; 
+    public function message()
+    {
+        return $this->message;
     }
 }
