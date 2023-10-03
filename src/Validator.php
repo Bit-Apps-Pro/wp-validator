@@ -52,8 +52,13 @@ class Validator
                     break;
                 }
 
-                list($ruleName, $paramValues) = $this->parseRule($ruleName);
-                $ruleClass = $this->resolveRule($ruleName);
+                if (is_subclass_of($ruleName, Rule::class)) {
+                    $ruleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
+                } else {
+                    list($ruleName, $paramValues) = $this->parseRule($ruleName);
+                    $ruleClass = $this->resolveRule($ruleName);
+                }
+
                 $ruleClass->setInputDataContainer($this->inputContainer);
                 $ruleClass->setRuleName($ruleName);
 
@@ -129,13 +134,7 @@ class Validator
 
             return new $ruleClass;
 
-        } else if (is_subclass_of($ruleName, Rule::class)) {
-
-            $customRuleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
-            return $customRuleClass;
-
         }
-
     }
 
 }
