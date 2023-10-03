@@ -2,6 +2,7 @@
     "name": "bitapps/wp-validator",
     "description": "WordPress Validation and Sanitization Library",
     "type": "library",
+    "homepage": "https://bitapps.pro",
     "license": "MIT",
     "version": "1.0.1",
     "keywords": ["validation","form-validation", "input-validation","input-sanitization", "PHP-validation"],
