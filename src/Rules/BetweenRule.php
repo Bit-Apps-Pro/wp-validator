@@ -17,7 +17,13 @@ class BetweenRule extends Rule
         $min = (int) $this->getParameter('min');
         $max = (int) $this->getParameter('max');
 
-        return strlen($value) >= $min && strlen($value) <= $max;
+        if (filter_var($value, FILTER_VALIDATE_INT)) {
+            return $value >= $min && $value <= $max;
+        } else if (is_array($value)) {
+            return count($value) >= $min && count($value) <= $max;
+        } else {
+            return strlen($value) >= $min && strlen($value) <= $max;
+        }
     }
 
     public function getParamKeys()
