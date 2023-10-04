@@ -125,30 +125,30 @@ This method will return the error messages (*if any*) based on the format of pas
 
 WP Validator provides a comprehensive set of validation rules to suit your needs. Here's a list of available rules:
 
-1. `accepted`: Checks if the value is one of the following: `'yes'`, `'on'`, `'1'`, `1`, `'true'`, `true`.
-2. `array`: Checks if the given value is an array.
-3. `between:min,max`: Checks if the value falls within the range of `:min` and `:max` (inclusive). The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
-4. `date`: Checks if the given value is a valid date.
-5. `digit_between:min,max`: Checks if the number of digits in the numeric value falls within the range of `:min` and `:max` (inclusive).
-6. `digits:value`: Checks if the number of digits in the numeric value is exactly same as `:value`.
-7. `email`: Checks if the field value is a valid email address.
-8. `integer`: Checks if the value is an integer number.
-9. `ip`: Checks if the value is a valid IP (IPv4 & IPv6) address.
-10. `ipv4`: Checks if the value is a valid IPv4 address.
-11. `ipv6`: Checks if the value is a valid IPv6 address.
-12. `json`: Checks if the value is a valid JSON string.
-13. `lowercase`: Checks if the string value consists of all lowercase letters.
-14. `mac_address`: Checks if the given value is a valid MAC address.
-15. `max:value`: Checks if the value is less than or equal to `:value`. The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
-16. `min:value`: Checks if the value is greater than or equal to `:value`. The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
-17. `nullable`: Makes the value optional but respects other validation rules if specified.
-18. `numeric`: Checks if the value is a valid real number.
-19. `required`: Checks if the value is present and not empty.
-20. `same:field`: Checks if the value is equal to the value of the specified `:field`.
-21. `size:value`: Checks if the value is exactly same as `:value`. The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
-22. `string`: Checks if the given value is a string.
-23. `uppercase`: Checks if the string value consists of all uppercase letters.
-24. `url`: Checks if the value is a valid URL.
+1. **`accepted`**: Checks if the value is one of the following: `'yes'`, `'on'`, `'1'`, `1`, `'true'`, `true`.
+2. **`array`**: Checks if the given value is an array.
+3. **`between:min,max`**: Checks if the value falls within the range of `:min` and `:max` (inclusive). The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
+4. **`date`**: Checks if the given value is a valid date.
+5. **`digit_between:min,max`**: Checks if the number of digits in the numeric value falls within the range of `:min` and `:max` (inclusive).
+6. **`digits:value`**: Checks if the number of digits in the numeric value is exactly same as `:value`.
+7. **`email`**: Checks if the field value is a valid email address.
+8. **`integer`**: Checks if the value is an integer number.
+9. **`ip`**: Checks if the value is a valid IP (IPv4 & IPv6) address.
+10. **`ipv4`**: Checks if the value is a valid IPv4 address.
+11. **`ipv6`**: Checks if the value is a valid IPv6 address.
+12. **`json`**: Checks if the value is a valid JSON string.
+13. **`lowercase`**: Checks if the string value consists of all lowercase letters.
+14. **`mac_address`**: Checks if the given value is a valid MAC address.
+15. **`max:value`**: Checks if the value is less than or equal to `:value`. The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
+16. **`min:value`**: Checks if the value is greater than or equal to `:value`. The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
+17. **`nullable`**: Makes the value optional but respects other validation rules if specified.
+18. **`numeric`**: Checks if the value is a valid real number.
+19. **`required`**: Checks if the value is present and not empty.
+20. **`same:field`**: Checks if the value is equal to the value of the specified `:field`.
+21. **`size:value`**: Checks if the value is exactly same as `:value`. The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
+22. **`string`**: Checks if the given value is a string.
+23. **`uppercase`**: Checks if the string value consists of all uppercase letters.
+24. **`url`**: Checks if the value is a valid URL.
 
 #### Customizing Error Messages
 
