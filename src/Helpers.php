@@ -6,9 +6,10 @@ trait Helpers
 {
     public function isEmpty($val)
     {
-        if (empty($val) && !in_array($val, ['0', 0, 0.0], true)) {
+        if (empty($val) && !is_numeric($val)) {
             return true;
         }
+
         return false;
     }
 }
