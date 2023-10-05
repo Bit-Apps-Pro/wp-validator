@@ -126,7 +126,7 @@ This method will return the error messages (*if any*) based on the format of the
 WP Validator provides a comprehensive set of validation rules to suit your needs. Here's a list of available rules:
 
 1. **`accepted`**
-Checks if the field under validation is one of the following: `'yes'`, `'on'`, `'1'`, `1`, `'true'`, `true`. This is useful for validating agreement type fields.
+    Checks if the field under validation is one of the following: `'yes'`, `'on'`, `'1'`, `1`, `'true'`, `true`. This is useful for validating agreement type fields.
 2. **`array`**
 Checks if the field under validation is an array.
 3. **`between:min,max`**
