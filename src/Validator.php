@@ -8,23 +8,9 @@ class Validator
 {
     use Helpers;
 
-    protected $errorBag;
+    private $errorBag;
 
-    protected $inputContainer;
-
-    public function parseRule($rule)
-    {
-        $exp = explode(':', $rule, 2);
-        $ruleName = $exp[0];
-        $params = [];
-
-        if (isset($exp[1])) {
-            $params = explode(',', $exp[1]);
-        }
-
-        return [$ruleName, $params];
-
-    }
+    private $inputContainer;
 
     public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null)
     {
@@ -79,40 +65,6 @@ class Validator
         return $this;
     }
 
-    public function sanitize()
-    {
-        if (empty($this->inputContainer->getData())) {
-            return [];
-        }
-
-        $data = $this->inputContainer->getData();
-
-        foreach ($data as $key => $value) {
-            if (is_string($value)) {
-                $data[$key] = $this->stripAllTags($value);
-            }
-        }
-
-        return $data;
-
-    }
-
-    private function stripAllTags($text, $removeBreaks = false)
-    {
-        if (is_null($text) && !is_scalar($text)) {
-            return '';
-        }
-
-        $text = preg_replace('@<(script|style)[^>]*?>.*?</\\1>@si', '', $text);
-        $text = strip_tags($text);
-
-        if ($removeBreaks) {
-            $text = preg_replace('/[\r\n\t ]+/', ' ', $text);
-        }
-
-        return trim($text);
-    }
-
     public function fails()
     {
         return !empty($this->errorBag->getErrors()) ? true : false;
@@ -123,7 +75,7 @@ class Validator
         return $this->errorBag->getErrors();
     }
 
-    protected function resolveRule($ruleName)
+    private function resolveRule($ruleName)
     {
         if (is_string($ruleName)) {
             $ruleClass = "BitApps\WPValidator\\Rules\\" . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
@@ -135,6 +87,20 @@ class Validator
             return new $ruleClass;
 
         }
+    }
+
+    private function parseRule($rule)
+    {
+        $exp = explode(':', $rule, 2);
+        $ruleName = $exp[0];
+        $params = [];
+
+        if (isset($exp[1])) {
+            $params = explode(',', $exp[1]);
+        }
+
+        return [$ruleName, $params];
+
     }
 
 }
