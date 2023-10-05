@@ -264,9 +264,9 @@ It will refer to the field name under validation & custom label if changed via `
 2. **`:value`**<br/>
 It will refer to the value of the field under validation.
 3. **`:min`**<br/>
-It will refer to the min value param of `between`, `digits_between`, `min` validation rules.
+It will refer to the min value parameter of `between`, `digits_between`, `min` validation rules.
 4. **`:max`**<br/>
-It will refer to the max value param of `between`, `digits_between`, `max` validation rules.
+It will refer to the max value parameter of `between`, `digits_between`, `max` validation rules.
 5. **`:digits`**<br/>
 It will refer to the value parameter of `digits` validation rule.
 6. **`:other`**<br/>
