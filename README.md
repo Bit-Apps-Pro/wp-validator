@@ -127,67 +127,67 @@ WP Validator provides a comprehensive set of validation rules to suit your needs
 
 1. **`accepted`**<br/>
 Checks if the field under validation is one of the following: `'yes'`, `'on'`, `'1'`, `1`, `'true'`, `true`. This is useful for validating agreement type fields.
-2. **`array`**
+2. **`array`**<br/>
 Checks if the field under validation is an array.
-3. **`between:min,max`**
+3. **`between:min,max`**<br/>
 Checks if the field under validation falls within the range of `:min` and `:max` (inclusive).
     - For string data, the value corresponds to the number of characters.
     - For numeric data, the value corresponds to a given integer value.
     - For an array, the value corresponds to the count of the array.
-4. **`date`**
+4. **`date`**<br/>
 Checks if the field under validation is a valid date according to the `strtotime` PHP function.
-5. **`digit_between:min,max`**
+5. **`digit_between:min,max`**<br/>
 Checks if the length of digits for the integer number falls within the range of `:min` and `:max` (inclusive).
-6. **`digits:value`**
+6. **`digits:value`**<br/>
 Checks if the length of digits for the integer number is exactly the same as `:digits`.
-7. **`email`**
+7. **`email`**<br/>
 Checks if the field under validation is a valid email address.
-8. **`integer`**
+8. **`integer`**<br/>
 Checks if the field under validation is an integer number.
-9. **`ip`**
+9. **`ip`**<br/>
 Checks if the field under validation is a valid IP (IPv4, IPv6) address.
-10. **`ipv4`**
+10. **`ipv4`**<br/>
 Checks if the field under validation is a valid IPv4 address.
-11. **`ipv6`**
+11. **`ipv6`**<br/>
 Checks if the field under validation is a valid IPv6 address.
-12. **`json`**
+12. **`json`**<br/>
 Checks if the field under validation is a valid JSON string.
-13. **`lowercase`**
+13. **`lowercase`**<br/>
 Checks if the field under validation consists of all lowercase letters.
-14. **`mac_address`**
+14. **`mac_address`**<br/>
 Checks if the field under validation is a valid MAC address.
-15. **`max:value`**
+15. **`max:value`**<br/>
 Checks if the field under validation is less than or equal to `:max`.
     - For string data, the value corresponds to the number of characters.
     - For numeric data, the value corresponds to a given integer value.
     - For an array, the value corresponds to the count of the array.
-16. **`min:value`**
+16. **`min:value`**<br/>
 Checks if the field under validation has a minimum value of `:min`.
     - For string data, the value corresponds to the number of characters.
     - For numeric data, the value corresponds to a given integer value.
     - For an array, the value corresponds to the count of the array.
-17. **`nullable`**
+17. **`nullable`**<br/>
 Makes the field under validation as optional (allow to be null), but respects other validation rules if specified and value is not null.
-18. **`numeric`**
+18. **`numeric`**<br/>
 Checks if the field under validation is a valid real number.
-19. **`required`**
+19. **`required`**<br/>
 Checks if the field under validation is present and not empty. A field is "empty" if it meets one of the following criteria:
     - The value is `NULL` or `FALSE`.
     - The value is `0`, `0.0`, or `"0"`.
     - The value is an empty string.
     - The value is an empty array or empty countable object.
-20. **`same:field`**
+20. **`same:field`**<br/>
 Checks if the field under validation is equal to the specified `:field` attribute.
-21. **`size:value`**
+21. **`size:value`**<br/>
 Checks if the field under validation has exactly the same size as `:size`.
     - For string data, the value corresponds to the number of characters.
     - For numeric data, the value corresponds to a given integer value.
     - For an array, the value corresponds to the count of the array.
-22. **`string`**
+22. **`string`**<br/>
 Checks if the given value is a string.
-23. **`uppercase`**
+23. **`uppercase`**<br/>
 Checks if the string value consists of all uppercase letters.
-24. **`url`**
+24. **`url`**<br/>
 Checks if the value is a valid URL.
 
 Missing any validation rule that you need? Refer to the [Custom Validation Rule](#custom-validation-rule) section to know how you can create and use custom validation rules in your project alongside the library.
@@ -259,13 +259,20 @@ If you use any other validation rules that you didn't mention in the Custom Mess
 
 ### List of Placeholders
 
-1. **`:attribute`**: It will refer to the field name under validation & custom label if changed via `$attributes` array.
-2. **`:value`**: It will refer to the value of the field under validation.
-3. **`:min`**: It will refer to the min value param of `between`, `digits_between`, `min` validation rules.
-4. **`:max`**: It will refer to the max value param of `between`, `digits_between`, `max` validation rules.
-5. **`:digits`**: It will refer to the value parameter of `digits` validation rule.
-6. **`:other`**: It will refer to the field parameter of `same` validation rule.
-7. **`:size`**: It will refer to the value parameter of `size` validation rule.
+1. **`:attribute`**<br/>
+It will refer to the field name under validation & custom label if changed via `$attributes` array.
+2. **`:value`**<br/>
+It will refer to the value of the field under validation.
+3. **`:min`**<br/>
+It will refer to the min value param of `between`, `digits_between`, `min` validation rules.
+4. **`:max`**<br/>
+It will refer to the max value param of `between`, `digits_between`, `max` validation rules.
+5. **`:digits`**<br/>
+It will refer to the value parameter of `digits` validation rule.
+6. **`:other`**<br/>
+It will refer to the field parameter of `same` validation rule.
+7. **`:size`**<br/>
+It will refer to the value parameter of `size` validation rule.
 
 # Contributing
 
