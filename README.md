@@ -167,7 +167,7 @@ Checks if the field under validation has a minimum value of `:min`.
     - For numeric data, the value corresponds to a given integer value.
     - For an array, the value corresponds to the count of the array.
 17. **`nullable`**<br/>
-Makes the field under validation as optional (allow to be null), but respects other validation rules if specified and value is not null.
+Makes the field under validation as optional (allows to be null), but respects other validation rules if specified and value is not null.
 18. **`numeric`**<br/>
 Checks if the field under validation is a valid real number.
 19. **`required`**<br/>
