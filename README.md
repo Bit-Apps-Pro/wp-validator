@@ -173,7 +173,6 @@ Checks if the field under validation is a valid real number.
 19. **`required`**<br/>
 Checks if the field under validation is present and not empty. A field is "empty" if it meets one of the following criteria:
     - The value is `NULL` or `FALSE`.
-    - The value is `0`, `0.0`, or `"0"`.
     - The value is an empty string.
     - The value is an empty array or empty countable object.
 20. **`same:field`**<br/>
