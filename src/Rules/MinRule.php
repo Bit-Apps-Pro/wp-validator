@@ -1,10 +1,12 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
+use BitApps\WPValidator\Helpers;
 use BitApps\WPValidator\Rule;
 
 class MinRule extends Rule
 {
+    use Helpers;
 
     private $message = "The :attribute must be at least :min characters";
 
@@ -16,7 +18,14 @@ class MinRule extends Rule
 
         $min = (int) $this->getParameter('min');
 
-        return strlen($value) >= $min;
+        $length = $this->getValueLength($value);
+
+        if ($length) {
+            return $length >= $min;
+        }
+
+        return false;
+
     }
 
     public function getParamKeys()

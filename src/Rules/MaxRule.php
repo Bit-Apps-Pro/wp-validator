@@ -1,10 +1,13 @@
 <?php
 namespace BitApps\WPValidator\Rules;
 
+use BitApps\WPValidator\Helpers;
 use BitApps\WPValidator\Rule;
 
 class MaxRule extends Rule
 {
+    use Helpers;
+
     protected $message = "The :attribute may not be greater than :max characters";
 
     protected $requireParameters = ['max'];
@@ -15,7 +18,14 @@ class MaxRule extends Rule
 
         $max = (int) $this->getParameter('max');
 
-        return strlen($value) <= $max;
+        $length = $this->getValueLength($value);
+
+        if ($length) {
+            return $length <= $max;
+        }
+
+        return false;
+
     }
 
     public function getParamKeys()
