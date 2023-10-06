@@ -19,46 +19,48 @@ class Validator
         $this->errorBag = new ErrorBag();
 
         foreach ($ruleFields as $field => $rules) {
+            if (isset($data[$field])) {
 
-            $attributeLabel = $field;
+                $attributeLabel = $field;
 
-            if (isset($attributeLabels[$field])) {
-                $attributeLabel = $attributeLabels[$field];
-            }
-
-            $this->inputContainer->setAttributeKey($field);
-
-            $this->inputContainer->setAttributeLabel($attributeLabel);
-
-            $value = $this->inputContainer->getAttributeValue();
-
-            foreach ($rules as $ruleName) {
-
-                if ($ruleName == 'nullable' && $this->isEmpty($value)) {
-                    break;
+                if (isset($attributeLabels[$field])) {
+                    $attributeLabel = $attributeLabels[$field];
                 }
 
-                if (is_subclass_of($ruleName, Rule::class)) {
-                    $ruleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
-                } else {
-                    list($ruleName, $paramValues) = $this->parseRule($ruleName);
-                    $ruleClass = $this->resolveRule($ruleName);
+                $this->inputContainer->setAttributeKey($field);
+
+                $this->inputContainer->setAttributeLabel($attributeLabel);
+
+                $value = $this->inputContainer->getAttributeValue();
+
+                foreach ($rules as $ruleName) {
+
+                    if ($ruleName == 'nullable' && $this->isEmpty($value)) {
+                        break;
+                    }
+
+                    if (is_subclass_of($ruleName, Rule::class)) {
+                        $ruleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
+                    } else {
+                        list($ruleName, $paramValues) = $this->parseRule($ruleName);
+                        $ruleClass = $this->resolveRule($ruleName);
+                    }
+
+                    $ruleClass->setInputDataContainer($this->inputContainer);
+                    $ruleClass->setRuleName($ruleName);
+
+                    if (!empty($paramValues)) {
+                        $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);
+                    }
+
+                    $isValidated = $ruleClass->validate($this->inputContainer->getAttributeValue());
+
+                    if (!$isValidated) {
+                        $this->errorBag->addError($ruleClass, $customMessages);
+                        break;
+                    }
+
                 }
-
-                $ruleClass->setInputDataContainer($this->inputContainer);
-                $ruleClass->setRuleName($ruleName);
-
-                if (!empty($paramValues)) {
-                    $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);
-                }
-
-                $isValidated = $ruleClass->validate($this->inputContainer->getAttributeValue());
-
-                if (!$isValidated) {
-                    $this->errorBag->addError($ruleClass, $customMessages);
-                    break;
-                }
-
             }
         }
 
