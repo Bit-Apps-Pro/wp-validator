@@ -6,7 +6,7 @@ Validate and sanitize form inputs and API requests with a PHP library inspired b
 
 ## Overview
 
-WP Validator is a comprehensive PHP package, inspired by Laravel, that simplifies the process of data validation and sanitization for WordPress. It provides a versatile and user-friendly solution for developers to ensure that user input meets specific criteria and is secure against common vulnerabilities.
+WP Validator is a comprehensive PHP package inspired by Laravel. It simplifies the process of data validation and sanitization for WordPress, providing a versatile and user-friendly solution for developers to ensure that user input meets specific criteria and is secure against common vulnerabilities.
 
 ## Features
 
@@ -37,7 +37,7 @@ use BitApps\WPValidator\Validator;
 $validator = new Validator;
 ```
 
-Public methods that can be used with `$validator`, refer: [Validator Instance Methods](#validator-instance-methods).
+For public methods that can be used with `$validator`, refer to the [Validator Instance Methods](#validator-instance-methods) section.
 
 ### 3. Define Your Data and Validation Rules
 
@@ -75,7 +75,7 @@ Learn more about customizing error messages in the [Customizing Error Messages](
 
 ### 5. Map Attribute Names (Optional)
 
-Map your field names to user-friendly labels using the `$attributes` array:
+Map your field names to user-friendly labels using the `$attributes` array, these labels will be used for error messages.
 
 ```php
 $attributes = [
@@ -107,50 +107,126 @@ if ($validation->fails()) {
 }
 ```
 
-#### Validator Instance Methods
+### Validator Instance Methods
 
-##### `make($data: array, $rules: array[, $customMessages?: array, $attributes?: array])`
+#### `make($data: array, $rules: array[, $customMessages?: array, $attributes?: array])`
 
-This method runs the validations of `$data` based on given `$rules`. Optionally, if you pass `$customMessages` and `$attributes` it will make the error messages (*if any*)  based on that.
+This method runs the validations of `$data` based on given `$rules`. Optionally, if you pass `$customMessages` and `$attributes`, it will make the error messages (*if any*) based on that.
 
-##### `fails(): boolean`
+#### `fails(): boolean`
 
-This method will return true or false based on the validation status. If it returns true, that means the validator has found errors in data and you can get those errors by `errors()` method.
+This method will return true or false based on the validation status. If it returns true, that means the validator has found errors in data, and you can get those errors by the `errors()` method.
 
-##### `errors(): array`
+#### `errors(): array`
 
-This method will return the error messages (*if any*) based on the format of passed `$data` array in `make()` method.
+This method will return the error messages (*if any*) based on the format of the passed `$data` array in the `make()` method.
 
-#### Available Validation Rules
+### Available Validation Rules
 
 WP Validator provides a comprehensive set of validation rules to suit your needs. Here's a list of available rules:
 
-1. `accepted`: Checks if the value is one of the following: `'yes'`, `'on'`, `'1'`, `1`, `'true'`, `true`.
-2. `array`: Checks if the given value is an array.
-3. `between:min,max`: Checks if the value falls within the range of `:min` and `:max` (inclusive). The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
-4. `date`: Checks if the given value is a valid date.
-5. `digit_between:min,max`: Checks if the number of digits in the numeric value falls within the range of `:min` and `:max` (inclusive).
-6. `digits:value`: Checks if the number of digits in the numeric value is exactly same as `:value`.
-7. `email`: Checks if the field value is a valid email address.
-8. `integer`: Checks if the value is an integer number.
-9. `ip`: Checks if the value is a valid IP (IPv4 & IPv6) address.
-10. `ipv4`: Checks if the value is a valid IPv4 address.
-11. `ipv6`: Checks if the value is a valid IPv6 address.
-12. `json`: Checks if the value is a valid JSON string.
-13. `lowercase`: Checks if the string value consists of all lowercase letters.
-14. `mac_address`: Checks if the given value is a valid MAC address.
-15. `max:value`: Checks if the value is less than or equal to `:value`. The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
-16. `min:value`: Checks if the value is greater than or equal to `:value`. The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
-17. `nullable`: Makes the value optional but respects other validation rules if specified.
-18. `numeric`: Checks if the value is a valid real number.
-19. `required`: Checks if the value is present and not empty.
-20. `same:field`: Checks if the value is equal to the value of the specified `:field`.
-21. `size:value`: Checks if the value is exactly same as `:value`. The value can be a `string (length)`, `numeric (value)`, or `array (count of elements)`.
-22. `string`: Checks if the given value is a string.
-23. `uppercase`: Checks if the string value consists of all uppercase letters.
-24. `url`: Checks if the value is a valid URL.
+1. **`accepted`**<br/>
+Checks if the field under validation is one of the following: `'yes'`, `'on'`, `'1'`, `1`, `'true'`, `true`. This is useful for validating agreement type fields.
+2. **`array`**<br/>
+Checks if the field under validation is an array.
+3. **`between:min,max`**<br/>
+Checks if the field under validation falls within the range of `:min` and `:max` (inclusive).
+    - For string data, the value corresponds to the number of characters.
+    - For numeric data, the value corresponds to a given integer value.
+    - For an array, the value corresponds to the count of the array.
+4. **`date`**<br/>
+Checks if the field under validation is a valid date according to the `strtotime` PHP function.
+5. **`digit_between:min,max`**<br/>
+Checks if the length of digits for the integer number falls within the range of `:min` and `:max` (inclusive).
+6. **`digits:value`**<br/>
+Checks if the length of digits for the integer number is exactly the same as `:digits`.
+7. **`email`**<br/>
+Checks if the field under validation is a valid email address.
+8. **`integer`**<br/>
+Checks if the field under validation is an integer number.
+9. **`ip`**<br/>
+Checks if the field under validation is a valid IP (IPv4, IPv6) address.
+10. **`ipv4`**<br/>
+Checks if the field under validation is a valid IPv4 address.
+11. **`ipv6`**<br/>
+Checks if the field under validation is a valid IPv6 address.
+12. **`json`**<br/>
+Checks if the field under validation is a valid JSON string.
+13. **`lowercase`**<br/>
+Checks if the field under validation consists of all lowercase letters.
+14. **`mac_address`**<br/>
+Checks if the field under validation is a valid MAC address.
+15. **`max:value`**<br/>
+Checks if the field under validation is less than or equal to `:max`.
+    - For string data, the value corresponds to the number of characters.
+    - For numeric data, the value corresponds to a given integer value.
+    - For an array, the value corresponds to the count of the array.
+16. **`min:value`**<br/>
+Checks if the field under validation has a minimum value of `:min`.
+    - For string data, the value corresponds to the number of characters.
+    - For numeric data, the value corresponds to a given integer value.
+    - For an array, the value corresponds to the count of the array.
+17. **`nullable`**<br/>
+Makes the field under validation as optional (allows to be null), but respects other validation rules if specified and value is not null.
+18. **`numeric`**<br/>
+Checks if the field under validation is a valid real number.
+19. **`required`**<br/>
+Checks if the field under validation is present and not empty. A field is "empty" if it meets one of the following criteria:
+    - The value is `NULL` or `FALSE`.
+    - The value is `0`, `0.0`, or `"0"`.
+    - The value is an empty string.
+    - The value is an empty array or empty countable object.
+20. **`same:field`**<br/>
+Checks if the field under validation is equal to the specified `:field` attribute.
+21. **`size:value`**<br/>
+Checks if the field under validation has exactly the same size as `:size`.
+    - For string data, the value corresponds to the number of characters.
+    - For numeric data, the value corresponds to a given integer value.
+    - For an array, the value corresponds to the count of the array.
+22. **`string`**<br/>
+Checks if the given value is a string.
+23. **`uppercase`**<br/>
+Checks if the string value consists of all uppercase letters.
+24. **`url`**<br/>
+Checks if the value is a valid URL.
 
-#### Customizing Error Messages
+Missing any validation rule that you need? Refer to the [Custom Validation Rule](#custom-validation-rule) section to know how you can create and use custom validation rules in your project alongside the library.
+
+### Custom Validation Rule
+
+Create the class of the validation rule into your project:
+
+```php
+<?php
+
+use BitApps\WPValidator\Rule;
+
+class BooleanRule extends Rule
+{
+    // error message if fails...
+    private $message = "The :attribute must be a boolean";
+
+    public function validate($value)
+    {
+        // validation code here...
+        return is_bool($value);
+    }
+
+    public function message()
+    {
+        return $this->message;
+    }
+}
+```
+
+Pass them as an instance into the `$rules` array:
+
+```php
+$rules = [
+    'agreed' => ['required', new BooleanRule],
+];
+```
+### Customizing Error Messages
 
 WP Validator provides default error messages based on validation rules. For added flexibility, you can change these error messages globally or even for specific fields and validation rules:
 
@@ -158,14 +234,12 @@ WP Validator provides default error messages based on validation rules. For adde
 $customMessages = [
     'required' => ':attribute is missing',
     'string' => ':attribute cannot contain any numerics',
-    'email' => 'Email is not valid',
-    'between' => 'The :attribute must be given between :min & :max'
+    'between' => 'The :attribute must be given between :min & :max',
+    'size' => 'The account number must consist of :size characters',
 ];
 ```
-
 Now, for each validation rule, it will return the custom error messages you have set.
-
-**Note:** `:attribute` refers to the field it's currently validating, acting as a placeholder. You can also use parameters of validation rules such as `:value`, `:min`, `:max` as placeholders.
+**Note:** `:attribute` refers to the field it's currently validating, acting as a placeholder. We have more placeholders like this; explore them in the [List of Placeholders](#list-of-placeholders) section.
 
 If you want more flexibility and wish to customize error messages individually for each validation rule and field, you can also achieve that:
 
@@ -173,15 +247,32 @@ If you want more flexibility and wish to customize error messages individually f
 $customMessages = [
     'first_name' => [
         'required' => 'First name must be present',
-        'string' => 'You cannot include anything except letters in the first name'
+        'string' => 'You cannot include anything except letters in the first name',
     ],
     'email' => [
-        'email' => 'The provided email is not valid'
+        'email' => 'The provided email is not valid',
     ],
 ];
 ```
 
-If you use any other validation rules that you didn't mention in the Custom Messages array, WP Validator will follow the default error message provided by us.
+If you use any other validation rules that you didn't mention in the Custom Messages array, WP Validator will follow the default error message.
+
+### List of Placeholders
+
+1. **`:attribute`**<br/>
+It will refer to the field name under validation & custom label if changed via `$attributes` array.
+2. **`:value`**<br/>
+It will refer to the value of the field under validation.
+3. **`:min`**<br/>
+It will refer to the min value parameter of `between`, `digits_between`, `min` validation rules.
+4. **`:max`**<br/>
+It will refer to the max value parameter of `between`, `digits_between`, `max` validation rules.
+5. **`:digits`**<br/>
+It will refer to the value parameter of `digits` validation rule.
+6. **`:other`**<br/>
+It will refer to the field parameter of `same` validation rule.
+7. **`:size`**<br/>
+It will refer to the value parameter of `size` validation rule.
 
 # Contributing
 
