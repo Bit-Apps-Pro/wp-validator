@@ -21,8 +21,8 @@
             "BitApps\\WPValidator\\": "src/"
         }
     },
-    "extra": {
-      "exclude-from-classmap": ["tests/"]
+    "archive": {
+      "exclude": ["/*.test"]
   },
     "scripts":{
         "test:unit":"./vendor/bin/pest --testdox --colors=always tests/ --exclude-group db",
