@@ -4,25 +4,25 @@ namespace BitApps\WPValidator;
 
 class Sanitizer
 {
-    use SanitizerAttributes;
+    use SanitizationMethods;
 
-    function sanitize($data, $sanitizeRules)
+    public function applySanitizationRules($inputData, $sanitizationRules)
     {
-        foreach ($sanitizeRules as $field => $rules) {
+        foreach ($sanitizationRules as $field => $rules) {
 
-            if (isset($data[$field])) {
+            if (isset($inputData[$field])) {
                 foreach ($rules as $rule) {
-                    $method = 'sanitize' . str_replace(' ', '', ucwords(str_replace('_', ' ', $rule)));
+                    $sanitizationMethod = 'sanitize' . str_replace(' ', '', ucwords(str_replace('_', ' ', $rule)));
 
-                    if (method_exists($this, $method)) {
-                        $data[$field] = $this->$method($data[$field]);
+                    if (method_exists($this, $sanitizationMethod)) {
+                        $inputData[$field] = $this->$sanitizationMethod($inputData[$field]);
                     }
                 }
             }
 
         }
 
-        return $data;
+        return $inputData;
     }
 
 }

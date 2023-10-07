@@ -1,7 +1,7 @@
 <?php
 namespace BitApps\WPValidator;
 
-trait SanitizerAttributes
+trait SanitizationMethods
 {
     protected function sanitizeEmail($value)
     {
