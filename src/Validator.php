@@ -6,11 +6,13 @@ use BitApps\WPValidator\Exception\RuleErrorException;
 
 class Validator
 {
-    use Helpers;
+    use Helpers, SanitizationMethods;
 
     private $errorBag;
 
     private $inputContainer;
+
+    private $validated = [];
 
     public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null)
     {
@@ -33,9 +35,17 @@ class Validator
 
                 $value = $this->inputContainer->getAttributeValue();
 
+                $this->validated[$field] = $value;
+
                 foreach ($rules as $ruleName) {
 
                     if ($ruleName == 'nullable' && $this->isEmpty($value)) {
+                        break;
+                    }
+
+                    if (strpos($ruleName, 'sanitize') !== false) {
+                        $this->applyFilter($ruleName, $field, $value);
+
                         break;
                     }
 
@@ -103,6 +113,27 @@ class Validator
 
         return [$ruleName, $params];
 
+    }
+
+    public function validated()
+    {
+        return empty($this->errors()) ? $this->validated : $this->errors();
+    }
+
+    private function applyFilter($sanitizeRule, $fieldName, $value)
+    {
+        $data = explode('|', $sanitizeRule);
+
+        $sanitizeName = isset($data[0]) ? explode(':', $data[0]) : [];
+        $params = isset($data[1]) ? explode(',', $data[1]) : [];
+
+        if (\count($sanitizeName) === 2) {
+            list($prefix, $suffix) = $sanitizeName;
+            $sanitizationMethod = $prefix . str_replace('_', '', ucwords($suffix, '_'));
+            if (method_exists($this, $sanitizationMethod)) {
+                $this->validated[$fieldName] = $this->{$sanitizationMethod}($value, ...$params);
+            }
+        }
     }
 
 }
