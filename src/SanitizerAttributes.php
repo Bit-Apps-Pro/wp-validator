@@ -37,7 +37,7 @@ trait SanitizerAttributes
     //     return sanitize_term_field($value);
     // }
 
-    protected function sanitizeTextField($value)
+    protected function sanitizeText($value)
     {
         return sanitize_text_field($value);
     }
