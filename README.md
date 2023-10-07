@@ -176,7 +176,7 @@ Checks if the field under validation is present and not empty. A field is "empty
     - The value is an empty string.
     - The value is an empty array or empty countable object.
 20. **`same:field`**<br/>
-Checks if the field under validation is equal to the specified `:field` attribute.
+Checks if the field under validation is equal to the specified `:other` attribute.
 21. **`size:value`**<br/>
 Checks if the field under validation has exactly the same size as `:size`.
     - For string data, the value corresponds to the number of characters.
