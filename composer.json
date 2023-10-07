@@ -21,8 +21,10 @@
             "BitApps\\WPValidator\\": "src/"
         }
     },
-    "archive": {
-      "exclude": ["/*.test"]
+    "autoload-dev": {
+    "psr-4": {
+      "BitApps\\WPValidator\\Tests\\": ["tests"]
+    }
   },
     "scripts":{
         "test:unit":"./vendor/bin/pest --testdox --colors=always tests/ --exclude-group db",
