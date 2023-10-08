@@ -46,7 +46,7 @@ class Validator
                     if (strpos($ruleName, 'sanitize') !== false) {
                         $this->applyFilter($ruleName, $field, $value);
 
-                        break;
+                        continue;
                     }
 
                     if (is_subclass_of($ruleName, Rule::class)) {
