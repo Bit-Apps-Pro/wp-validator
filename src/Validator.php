@@ -42,7 +42,7 @@ class Validator
 
             foreach ($rules as $ruleName) {
 
-                if (strpos($ruleName, 'sanitize') !== false) {
+                if (is_string($ruleName) && strpos($ruleName, 'sanitize') !== false) {
                     $this->applyFilter($ruleName, $field, $value);
 
                     continue;
