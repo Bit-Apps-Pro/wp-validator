@@ -21,56 +21,54 @@ class Validator
         $this->errorBag = new ErrorBag();
 
         foreach ($ruleFields as $field => $rules) {
-            if (isset($data[$field])) {
 
-                $attributeLabel = $field;
+            $attributeLabel = $field;
 
-                if (isset($attributeLabels[$field])) {
-                    $attributeLabel = $attributeLabels[$field];
+            if (isset($attributeLabels[$field])) {
+                $attributeLabel = $attributeLabels[$field];
+            }
+
+            $this->inputContainer->setAttributeKey($field);
+
+            $this->inputContainer->setAttributeLabel($attributeLabel);
+
+            $value = $this->inputContainer->getAttributeValue();
+
+            $this->validated[$field] = $value;
+
+            if (in_array('nullable', $rules) && $this->isEmpty($value)) {
+                continue;
+            }
+
+            foreach ($rules as $ruleName) {
+
+                if (strpos($ruleName, 'sanitize') !== false) {
+                    $this->applyFilter($ruleName, $field, $value);
+
+                    continue;
                 }
 
-                $this->inputContainer->setAttributeKey($field);
-
-                $this->inputContainer->setAttributeLabel($attributeLabel);
-
-                $value = $this->inputContainer->getAttributeValue();
-
-                $this->validated[$field] = $value;
-
-                foreach ($rules as $ruleName) {
-
-                    if ($ruleName == 'nullable' && $this->isEmpty($value)) {
-                        break;
-                    }
-
-                    if (strpos($ruleName, 'sanitize') !== false) {
-                        $this->applyFilter($ruleName, $field, $value);
-
-                        continue;
-                    }
-
-                    if (is_subclass_of($ruleName, Rule::class)) {
-                        $ruleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
-                    } else {
-                        list($ruleName, $paramValues) = $this->parseRule($ruleName);
-                        $ruleClass = $this->resolveRule($ruleName);
-                    }
-
-                    $ruleClass->setInputDataContainer($this->inputContainer);
-                    $ruleClass->setRuleName($ruleName);
-
-                    if (!empty($paramValues)) {
-                        $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);
-                    }
-
-                    $isValidated = $ruleClass->validate($this->inputContainer->getAttributeValue());
-
-                    if (!$isValidated) {
-                        $this->errorBag->addError($ruleClass, $customMessages);
-                        break;
-                    }
-
+                if (is_subclass_of($ruleName, Rule::class)) {
+                    $ruleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
+                } else {
+                    list($ruleName, $paramValues) = $this->parseRule($ruleName);
+                    $ruleClass = $this->resolveRule($ruleName);
                 }
+
+                $ruleClass->setInputDataContainer($this->inputContainer);
+                $ruleClass->setRuleName($ruleName);
+
+                if (!empty($paramValues)) {
+                    $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);
+                }
+
+                $isValidated = $ruleClass->validate($this->inputContainer->getAttributeValue());
+
+                if (!$isValidated) {
+                    $this->errorBag->addError($ruleClass, $customMessages);
+                    break;
+                }
+
             }
         }
 
@@ -120,18 +118,20 @@ class Validator
         return empty($this->errors()) ? $this->validated : $this->errors();
     }
 
-    private function applyFilter($sanitizeRule, $fieldName, $value)
+    private function applyFilter($sanitize, $fieldName, $value)
     {
-        $data = explode('|', $sanitizeRule);
+        $data = explode('|', $sanitize);
 
         $sanitizeName = isset($data[0]) ? explode(':', $data[0]) : [];
         $params = isset($data[1]) ? explode(',', $data[1]) : [];
 
         if (\count($sanitizeName) === 2) {
+
             list($prefix, $suffix) = $sanitizeName;
             $sanitizationMethod = $prefix . str_replace('_', '', ucwords($suffix, '_'));
+
             if (method_exists($this, $sanitizationMethod)) {
-                $this->validated[$fieldName] = $this->{$sanitizationMethod}($value, ...$params);
+                $this->validated[$fieldName] = $this->{$sanitizationMethod}($value, $params);
             }
         }
     }
