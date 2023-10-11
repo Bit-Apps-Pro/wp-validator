@@ -73,4 +73,14 @@ trait SanitizationMethods
         return ucwords(strtolower($value));
     }
 
+    protected function sanitizeLowercase($value)
+    {
+        return strtolower($value);
+    }
+
+    protected function sanitizeUppercase($value)
+    {
+        return strtoupper($value);
+    }
+
 }
