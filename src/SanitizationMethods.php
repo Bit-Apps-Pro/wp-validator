@@ -83,4 +83,9 @@ trait SanitizationMethods
         return strtoupper($value);
     }
 
+    protected function sanitizeUcfirst($value)
+    {
+        return ucfirst($value);
+    }
+
 }
