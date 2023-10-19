@@ -27,31 +27,8 @@ class ErrorBag
             $message = $this->replacePlaceholders($placeholders, $role->message());
         }
 
-        $nestedKeys = explode('.', $attributeKey);
+        $this->errors[$attributeKey][] = $message;
 
-        if (is_array($nestedKeys)) {
-            $this->generateNestedError($nestedKeys, $message);
-        } else {
-            $this->errors[$attributeKey][] = $message;
-        }
-
-    }
-
-    private function generateNestedError($keys, $message)
-    {
-        $errors = &$this->errors;
-
-        while ($keys) {
-            $key = array_shift($keys);
-
-            if (isset($current[$key]) && !is_array($current[$key])) {
-                $errors[$key] = [];
-            }
-
-            $errors = &$errors[$key];
-        }
-
-        $errors = $message;
     }
 
     private function replacePlaceholders($placeholders, $message)
