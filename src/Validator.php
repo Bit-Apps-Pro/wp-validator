@@ -37,6 +37,7 @@ class Validator
             $this->validated[$field] = $value;
 
             if (in_array('nullable', $rules) && $this->isEmpty($value)) {
+                unset($this->validated[$field]);
                 continue;
             }
 
