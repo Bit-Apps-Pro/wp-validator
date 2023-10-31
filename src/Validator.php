@@ -34,10 +34,11 @@ class Validator
 
             $value = $this->inputContainer->getAttributeValue();
 
-            $this->validated[$field] = $value;
+            if (isset($data[$field])) {
+                $this->validated[$field] = $value;
+            }
 
-            if (in_array('nullable', $rules) && $this->isEmpty($value)) {
-                unset($this->validated[$field]);
+            if (\in_array('nullable', $rules) && $this->isEmpty($value)) {
                 continue;
             }
 
