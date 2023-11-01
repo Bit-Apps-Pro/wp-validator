@@ -6,7 +6,7 @@ trait Helpers
 {
     protected function isEmpty($val)
     {
-        if (empty($val) && !is_numeric($val)) {
+        if (empty($val) && !in_array($val, ['0', 0, 0.0, false], true)) {
             return true;
         }
 

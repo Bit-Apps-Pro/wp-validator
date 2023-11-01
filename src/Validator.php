@@ -18,6 +18,8 @@ class Validator
     {
         $this->inputContainer = new InputDataContainer($data);
 
+        // $this->validated = $data;
+
         $this->errorBag = new ErrorBag();
 
         foreach ($ruleFields as $field => $rules) {
@@ -34,7 +36,7 @@ class Validator
 
             $value = $this->inputContainer->getAttributeValue();
 
-            if (isset($data[$field])) {
+            if (array_key_exists($field, $data)) {
                 $this->validated[$field] = $value;
             }
 
