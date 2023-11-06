@@ -18,8 +18,6 @@ class Validator
     {
         $this->inputContainer = new InputDataContainer($data);
 
-        // $this->validated = $data;
-
         $this->errorBag = new ErrorBag();
 
         foreach ($ruleFields as $field => $rules) {
@@ -92,7 +90,7 @@ class Validator
     private function resolveRule($ruleName)
     {
         if (is_string($ruleName)) {
-            $ruleClass = "BitApps\WPValidator\\Rules\\" . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
+            $ruleClass = __NAMESPACE__ . '\\Rules\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
 
             if (!class_exists($ruleClass)) {
                 throw new RuleErrorException("Unsupported validation rule: $ruleName");
