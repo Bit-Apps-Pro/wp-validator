@@ -35,10 +35,16 @@ class ErrorBag
     {
         foreach ($placeholders as $key => $placeholder) {
             if (isset($placeholders[$key])) {
+
+                if (is_object($placeholder)) {
+                    $placeholder = (array) $placeholder;
+                }
+
                 if (is_array($placeholder)) {
                     $placeholder = implode(',', $placeholder);
                 }
                 $message = str_replace(":" . $key, $placeholder, $message);
+
             }
         }
         return $message;
