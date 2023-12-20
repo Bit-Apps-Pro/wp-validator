@@ -34,10 +34,11 @@ class Validator
 
             $value = $this->inputContainer->getAttributeValue();
 
-            $this->validated[$field] = $value;
+            if (array_key_exists($field, $data)) {
+                $this->validated[$field] = $value;
+            }
 
-            if (in_array('nullable', $rules) && $this->isEmpty($value)) {
-                unset($this->validated[$field]);
+            if (\in_array('nullable', $rules) && $this->isEmpty($value)) {
                 continue;
             }
 
@@ -89,7 +90,7 @@ class Validator
     private function resolveRule($ruleName)
     {
         if (is_string($ruleName)) {
-            $ruleClass = "BitApps\WPValidator\\Rules\\" . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
+            $ruleClass = __NAMESPACE__ . '\\Rules\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
 
             if (!class_exists($ruleClass)) {
                 throw new RuleErrorException("Unsupported validation rule: $ruleName");
