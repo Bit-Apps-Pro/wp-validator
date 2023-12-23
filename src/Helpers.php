@@ -28,4 +28,33 @@ trait Helpers
         return $value;
 
     }
+
+    public function setNestedElement($data, $keys, $value)
+    {
+        // $keys = explode('.', trim($keys, '[]'));
+        $reference = &$data;
+        foreach ($keys as $key) {
+
+            if (!array_key_exists($key, $reference)) {
+                $reference[$key] = [];
+            }
+            $reference = &$reference[$key];
+        }
+        $reference = $value;
+        unset($reference);
+        return $data;
+    }
+
+    public function getValueFromPath($keys, $data)
+    {
+        $counter = 0;
+        while (count($keys) > $counter) {
+            $path = $keys[$counter];
+            if (isset($data[$path])) {
+                $data = $data[$path];
+            }
+            $counter++;
+        }
+        return $data;
+    }
 }

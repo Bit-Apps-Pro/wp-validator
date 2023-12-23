@@ -34,9 +34,7 @@ class Validator
 
             $value = $this->inputContainer->getAttributeValue();
 
-            if (array_key_exists($field, $data)) {
-                $this->validated[$field] = $value;
-            }
+            $this->storeValidatedData($field, $data, $value);
 
             if (\in_array('nullable', $rules) && $this->isEmpty($value)) {
                 continue;
@@ -135,6 +133,21 @@ class Validator
             if (method_exists($this, $sanitizationMethod)) {
                 $this->validated[$fieldName] = $this->{$sanitizationMethod}($value, $params);
             }
+        }
+    }
+
+    private function storeValidatedData($field, $data, $value)
+    {
+        $keys = explode('.', trim($field, '[]'));
+
+        if (count($keys) > 1) {
+            // echo "<pre>";
+            // echo print_r($this->setNestedElement($data, $keys, $value), true);
+            // echo "</pre>";die;
+            $this->validated = $this->setNestedElement($data, $keys, $value);
+        }
+        if (array_key_exists($field, $data)) {
+            $this->validated[$field] = $value;
         }
     }
 

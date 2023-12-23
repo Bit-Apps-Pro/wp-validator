@@ -4,6 +4,7 @@ namespace BitApps\WPValidator;
 
 class ErrorBag
 {
+    use Helpers;
     protected $errors = [];
 
     public function addError($role, $customMessages)
@@ -27,7 +28,13 @@ class ErrorBag
             $message = $this->replacePlaceholders($placeholders, $role->message());
         }
 
-        $this->errors[$attributeKey][] = $message;
+        $keys = explode('.', trim($attributeKey, '[]'));
+
+        if (is_array($keys) && count($keys) > 0) {
+            $this->errors = $this->setNestedElement($this->errors, $keys, $message);
+        } else {
+            $this->errors[$attributeKey][] = $message;
+        }
 
     }
 

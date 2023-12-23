@@ -3,7 +3,8 @@ namespace BitApps\WPValidator;
 
 class InputDataContainer
 {
-    private $data = []; 
+    use Helpers;
+    private $data = [];
     private $attributeKey;
     private $attributeLabel;
 
@@ -22,16 +23,23 @@ class InputDataContainer
         return $this->attributeKey;
     }
 
-    public function getAttributeValue($key=null)
+    public function getAttributeValue($key = null)
     {
-        if(isset($this->data[$key])){
-            return $this->data[$key];
+        $keys = explode('.', trim($this->attributeKey, '[]'));
+        $data = $this->data;
+        if (is_array($keys)) {
+            $data = $this->getValueFromPath($keys, $data);
+        } else {
+            if (isset($data[$key])) {
+                return $data[$key];
+            } elseif (isset($data[$this->attributeKey])) {
+                return $data[$this->attributeKey];
+            } else {
+                return null;
+            }
         }
+        return $data;
 
-        if(isset($this->data[$this->attributeKey])){
-            return $this->data[$this->attributeKey];
-        }
-        return null;
     }
 
     public function setAttributeLabel($value)
