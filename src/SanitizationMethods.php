@@ -1,4 +1,5 @@
 <?php
+
 namespace BitApps\WPValidator;
 
 trait SanitizationMethods
@@ -54,7 +55,7 @@ trait SanitizationMethods
 
     protected function sanitizeUrl($value, $params = [])
     {
-        return sanitize_url($value);
+        return esc_url_raw($value);
     }
 
     protected function sanitizeTrim($value, $params = [])
@@ -65,7 +66,6 @@ trait SanitizationMethods
     protected function sanitizeEscape($value, $params = [])
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-
     }
 
     protected function sanitizeCapitalize($value, $params = [])
@@ -87,5 +87,4 @@ trait SanitizationMethods
     {
         return ucfirst($value);
     }
-
 }
