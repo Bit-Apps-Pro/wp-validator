@@ -42,7 +42,7 @@ test('validator', function () {
     $errors = $validation->errors();
     expect(true)->toBe($validation->fails(true));
     expect($errors)->toBeArray();
-    expect($errors)->toHaveCount(4);
+    expect($errors)->toHaveCount(422);
     expect($errors)->toHaveKeys(['last_name', 'age', 'email', 'confirm_password']);
     expect($errors)->toBe([
         'last_name' => ['The Last Name field is required'],
