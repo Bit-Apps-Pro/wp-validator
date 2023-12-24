@@ -21,5 +21,11 @@ jobs:
       - name: Install dependencies
         run: composer install
 
-      - name: Run PHPUnit
-        run: composer test:unit
+       name: Run PHPUnit
+        run: |
+          composer test:unit
+          TEST_EXIT_CODE=$?
+          if [ $TEST_EXIT_CODE -ne 0 ]; then
+            echo "PHPUnit tests failed. Aborting commit."
+            exit $TEST_EXIT_CODE
+          fi
