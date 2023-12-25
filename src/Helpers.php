@@ -31,7 +31,6 @@ trait Helpers
 
     public function setNestedElement($data, $keys, $value)
     {
-        // $keys = explode('.', trim($keys, '[]'));
         $reference = &$data;
         foreach ($keys as $key) {
             if (is_object($reference) && property_exists($reference, $key)) {
@@ -45,6 +44,7 @@ trait Helpers
             }
 
         }
+
         $reference = $value;
         unset($reference);
 
