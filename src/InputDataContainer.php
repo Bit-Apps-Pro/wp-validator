@@ -27,7 +27,8 @@ class InputDataContainer
     {
         $keys = explode('.', trim($this->attributeKey, '[]'));
         $data = $this->data;
-        if (is_array($keys)) {
+
+        if (is_array($keys) && count($keys) > 1) {
             $data = $this->getValueFromPath($keys, $data);
         } else {
             if (isset($data[$key])) {
@@ -38,6 +39,7 @@ class InputDataContainer
                 return null;
             }
         }
+
         return $data;
 
     }
