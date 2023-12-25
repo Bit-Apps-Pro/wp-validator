@@ -34,14 +34,20 @@ trait Helpers
         // $keys = explode('.', trim($keys, '[]'));
         $reference = &$data;
         foreach ($keys as $key) {
-
-            if (!array_key_exists($key, $reference)) {
-                $reference[$key] = [];
+            if (is_object($reference) && property_exists($reference, $key)) {
+                $reference->$key = [];
+                $reference = &$reference->{$key};
+            } else {
+                if (is_array($reference) && !array_key_exists($key, $reference)) {
+                    $reference[$key] = [];
+                }
+                $reference = &$reference[$key];
             }
-            $reference = &$reference[$key];
+
         }
         $reference = $value;
         unset($reference);
+
         return $data;
     }
 
@@ -50,6 +56,9 @@ trait Helpers
         $counter = 0;
         while (count($keys) > $counter) {
             $path = $keys[$counter];
+            if (is_object($data)) {
+                $data = (array) $data;
+            }
             if (isset($data[$path])) {
                 $data = $data[$path];
             }
