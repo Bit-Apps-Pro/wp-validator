@@ -20,8 +20,8 @@ class ErrorBag
 
         $placeholders = array_merge($paramValues, $defaultPlaceholders);
 
-        if (is_string($roleName) && isset($customMessages[$attributeKey][$roleName])) {
-            $message = $this->replacePlaceholders($placeholders, $customMessages[$attributeKey][$roleName]);
+        if (is_string($roleName) && isset($customMessages[$attributeKey . '.' . $roleName])) {
+            $message = $this->replacePlaceholders($placeholders, $customMessages[$attributeKey . '.' . $roleName]);
         } elseif (is_string($roleName) && isset($customMessages[$roleName])) {
             $message = $this->replacePlaceholders($placeholders, $customMessages[$roleName]);
         } else {
