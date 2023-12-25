@@ -30,10 +30,11 @@ class ErrorBag
 
         $keys = explode('.', trim($attributeKey, '[]'));
 
-        if (is_array($keys) && count($keys) > 0) {
+        if (is_array($keys) && count($keys) > 1) {
+
             $this->errors = $this->setNestedElement($this->errors, $keys, $message);
         } else {
-            $this->errors[$attributeKey][] = $message;
+            $this->errors[$attributeKey] = $message;
         }
 
     }
