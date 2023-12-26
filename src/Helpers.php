@@ -39,8 +39,8 @@ trait Helpers
             } else {
                 if (is_array($reference) && !array_key_exists($key, $reference)) {
                     $reference[$key] = [];
+                    $reference = &$reference[$key];
                 }
-                $reference = &$reference[$key];
             }
 
         }
@@ -61,9 +61,12 @@ trait Helpers
             }
             if (isset($data[$path])) {
                 $data = $data[$path];
+            } else {
+                return null;
             }
             $counter++;
         }
+
         return $data;
     }
 }

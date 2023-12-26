@@ -27,16 +27,7 @@ class ErrorBag
         } else {
             $message = $this->replacePlaceholders($placeholders, $role->message());
         }
-
-        $keys = explode('.', trim($attributeKey, '[]'));
-
-        if (is_array($keys) && count($keys) > 1) {
-
-            $this->errors = $this->setNestedElement($this->errors, $keys, $message);
-        } else {
-            $this->errors[$attributeKey] = $message;
-        }
-
+        $this->errors[$attributeKey][] = $message;
     }
 
     private function replacePlaceholders($placeholders, $message)
