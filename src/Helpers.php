@@ -2,6 +2,8 @@
 
 namespace BitApps\WPValidator;
 
+use stdClass;
+
 trait Helpers
 {
     protected function isEmpty($val)
@@ -29,26 +31,44 @@ trait Helpers
 
     }
 
-    public function setNestedElement($data, $keys, $value)
+    // public function setNestedElement($data, $keys, $value)
+    // {
+    //     $reference = &$data;
+    //     foreach ($keys as $key) {
+    //         if (is_object($reference) && property_exists($reference, $key)) {
+    //             $reference->$key = [];
+    //             $reference = &$reference->{$key};
+    //         } else {
+    //             if (is_array($reference) && !array_key_exists($key, $reference)) {
+    //                 $reference[$key] = [];
+    //             }
+    //             $reference = &$reference[$key];
+    //         }
+
+    //     }
+
+    //     $reference = $value;
+    //     unset($reference);
+
+    //     return $data;
+    // }
+
+    public function setNestedElement(&$data, $keys, $value)
     {
-        $reference = &$data;
+        $current = &$data;
+
         foreach ($keys as $key) {
-            if (is_object($reference) && property_exists($reference, $key)) {
-                $reference->$key = [];
-                $reference = &$reference->{$key};
-            } else {
-                if (is_array($reference) && !array_key_exists($key, $reference)) {
-                    $reference[$key] = [];
-                    $reference = &$reference[$key];
-                }
+            if (is_array($current) && !isset($current[$key])) {
+                $current[$key] = [];
+            } elseif (is_object($current) && !isset($current->$key)) {
+                $current->$key = new stdClass();
             }
 
+            $current = &$current[$key] ?? $current->$key;
         }
 
-        $reference = $value;
-        unset($reference);
-
-        return $data;
+        $current = $value;
+        return $current;
     }
 
     public function getValueFromPath($keys, $data)
@@ -66,7 +86,20 @@ trait Helpers
             }
             $counter++;
         }
-
         return $data;
+    }
+
+    public function nestedArrayKeyExists($array, $keys)
+    {
+
+        foreach ($keys as $key) {
+            if (\is_array($array) && \array_key_exists($key, $array)) {
+                $array = $array[$key];
+            } else {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

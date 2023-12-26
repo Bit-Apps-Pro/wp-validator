@@ -131,7 +131,16 @@ class Validator
             $sanitizationMethod = $prefix . str_replace('_', '', ucwords($suffix, '_'));
 
             if (method_exists($this, $sanitizationMethod)) {
-                $this->validated[$fieldName] = $this->{$sanitizationMethod}($value, $params);
+
+                $sanitizedValue = $this->{$sanitizationMethod}($value, $params);
+
+                $keys = explode('.', trim($fieldName, '[]'));
+                if (count($keys) > 1) {
+                    $this->setNestedElement($this->validated, $keys, $sanitizedValue);
+                } else {
+                    $this->validated[$fieldName] = $sanitizedValue;
+                }
+
             }
         }
     }
@@ -140,13 +149,10 @@ class Validator
     {
         $keys = explode('.', trim($field, '[]'));
 
-        if (count($keys) > 1) {
-            // echo "<pre>";
-            // echo print_r($this->setNestedElement($data, $keys, $value), true);
-            // echo "</pre>";die;
-            $this->validated = $this->setNestedElement($data, $keys, $value);
+        if (\count($keys) > 1 && $this->nestedArrayKeyExists($data, $keys)) {
+            $this->setNestedElement($this->validated, $keys, $value);
         }
-        if (array_key_exists($field, $data)) {
+        if (\array_key_exists($field, $data)) {
             $this->validated[$field] = $value;
         }
     }
