@@ -70,7 +70,6 @@ class Validator
                     $this->errorBag->addError($ruleClass, $customMessages);
                     break;
                 }
-
             }
         }
 
@@ -89,16 +88,25 @@ class Validator
 
     private function resolveRule($ruleName)
     {
-        if (is_string($ruleName)) {
-            $ruleClass = __NAMESPACE__ . '\\Rules\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
-
-            if (!class_exists($ruleClass)) {
-                throw new RuleErrorException("Unsupported validation rule: $ruleName");
-            }
-
-            return new $ruleClass;
-
+        if (!is_string($ruleName)) {
+            throw new RuleErrorException("Rule name must be string");
         }
+
+        if (is_subclass_of($ruleName, Rule::class)) {
+            $ruleClass = $ruleName;
+        } else {
+            $ruleClass = __NAMESPACE__
+                . '\\Rules\\'
+                . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName)))
+                . 'Rule';
+        }
+
+
+        if (!class_exists($ruleClass)) {
+            throw new RuleErrorException("Unsupported validation rule: $ruleName");
+        }
+
+        return new $ruleClass;
     }
 
     private function parseRule($rule)
@@ -112,7 +120,6 @@ class Validator
         }
 
         return [$ruleName, $params];
-
     }
 
     public function validated()
@@ -137,5 +144,4 @@ class Validator
             }
         }
     }
-
 }
