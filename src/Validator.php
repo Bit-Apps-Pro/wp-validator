@@ -92,15 +92,10 @@ class Validator
             throw new RuleErrorException("Rule name must be string");
         }
 
-        if (is_subclass_of($ruleName, Rule::class)) {
-            $ruleClass = $ruleName;
-        } else {
-            $ruleClass = __NAMESPACE__
-                . '\\Rules\\'
-                . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName)))
-                . 'Rule';
-        }
-
+        $ruleClass = __NAMESPACE__
+            . '\\Rules\\'
+            . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName)))
+            . 'Rule';
 
         if (!class_exists($ruleClass)) {
             throw new RuleErrorException("Unsupported validation rule: $ruleName");
