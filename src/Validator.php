@@ -91,14 +91,8 @@ class Validator
 
     private function resolveRule($ruleName)
     {
-        if (\is_string($ruleName)) {
-            $ruleClass = __NAMESPACE__ . '\\Rules\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
-
-            if (!class_exists($ruleClass)) {
-                throw new RuleErrorException($ruleName);
-            }
-
-            return new $ruleClass();
+        if (!\is_string($ruleName)) {
+            throw new RuleErrorException('Rule name must be string ');
         }
 
         $ruleClass = __NAMESPACE__
@@ -107,7 +101,7 @@ class Validator
             . 'Rule';
 
         if (!class_exists($ruleClass)) {
-            throw new RuleErrorException("Unsupported validation rule: {$ruleName}");
+            throw new RuleErrorException(sprintf('Unsupported validation rule: %s.', $ruleName));
         }
 
         return new $ruleClass();
