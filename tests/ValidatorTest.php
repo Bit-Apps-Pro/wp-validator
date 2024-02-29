@@ -45,13 +45,11 @@ test('validator', function () {
     expect(true)->toBe($validation->fails(true));
     expect($errors)->toBeArray();
     expect($errors)->toHaveCount(4);
-    expect($errors)->toHaveKeys(['names', 'age', 'email', 'confirm_password']);
+    expect($errors)->toHaveKeys(['names.last_name', 'age', 'email', 'confirm_password']);
     expect($errors)->toBe([
-        'names' => [
-            'last_name' => 'The Last Name field is required',
-        ],
-        'age' => 'The age must be between 18 and 25',
-        'email' => 'The Email must be a valid email address',
-        'confirm_password' => 'The Confirm Password and password must match',
+        'names.last_name' => ['The Last Name field is required'],
+        'age' => ['The age must be between 18 and 25'],
+        'email' => ['The Email must be a valid email address'],
+        'confirm_password' => ['The Confirm Password and password must match'],
     ]);
 });
