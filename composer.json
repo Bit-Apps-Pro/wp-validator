@@ -4,7 +4,6 @@
     "type": "library",
     "homepage": "https://bitapps.pro",
     "license": "MIT",
-    "version": "1.0.3",
     "keywords": ["validation","form-validation", "input-validation","input-sanitization", "PHP-validation"],
     "support": {
       "issues": "https://github.com/Bit-Apps-Pro/wp-validator/issues",
@@ -45,5 +44,10 @@
         "allow-plugins": {
             "pestphp/pest-plugin": false
         }
+    },
+    "extra": {
+      "branch-alias": {
+        "dev-main": "1.x-dev"
+      }
     }
 }
