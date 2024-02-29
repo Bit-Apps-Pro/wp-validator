@@ -217,11 +217,10 @@ class Validator
     {
         $keys = explode('.', trim($field, '[]'));
 
-        if (count($keys) > 1 && $this->isNestedKeyExists($data, $keys)) {
-            $this->validated[$field] = $this->setNestedElement($data, $keys, $value);
+        if (\count($keys) > 1 && $this->isNestedKeyExists($data, $keys)) {
+            $this->setNestedElement($this->validated, $keys, $value);
         }
-
-        if (array_key_exists($field, $data)) {
+        if (\array_key_exists($field, $data)) {
             $this->validated[$field] = $value;
         }
     }
