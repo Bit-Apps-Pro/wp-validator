@@ -34,7 +34,7 @@ abstract class Rule
             if (!isset($this->params[$param])) {
                 $ruleName = $this->getRuleName();
                 $parameterCount = count($params);
-                throw new InvalidArgumentException("Validation rule $ruleName requires at least $parameterCount parameters");
+                throw new InvalidArgumentException($ruleName, $parameterCount);
             }
         }
     }

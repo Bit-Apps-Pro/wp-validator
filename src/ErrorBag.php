@@ -4,12 +4,15 @@ namespace BitApps\WPValidator;
 
 class ErrorBag
 {
+    use Helpers;
     protected $errors = [];
 
     public function addError($role, $customMessages)
     {
         $attributeKey = $role->getInputDataContainer()->getAttributeKey();
+
         $roleName = $role->getRuleName();
+
         $paramValues = $role->getParamValues();
 
         $defaultPlaceholders = [
@@ -19,16 +22,14 @@ class ErrorBag
 
         $placeholders = array_merge($paramValues, $defaultPlaceholders);
 
-        if (is_string($roleName) && isset($customMessages[$attributeKey][$roleName])) {
-            $message = $this->replacePlaceholders($placeholders, $customMessages[$attributeKey][$roleName]);
+        if (is_string($roleName) && isset($customMessages[$attributeKey . '.' . $roleName])) {
+            $message = $this->replacePlaceholders($placeholders, $customMessages[$attributeKey . '.' . $roleName]);
         } elseif (is_string($roleName) && isset($customMessages[$roleName])) {
             $message = $this->replacePlaceholders($placeholders, $customMessages[$roleName]);
         } else {
             $message = $this->replacePlaceholders($placeholders, $role->message());
         }
-
         $this->errors[$attributeKey][] = $message;
-
     }
 
     private function replacePlaceholders($placeholders, $message)

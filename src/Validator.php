@@ -2,6 +2,7 @@
 
 namespace BitApps\WPValidator;
 
+use BitApps\WPValidator\Exception\MethodNotFoundException;
 use BitApps\WPValidator\Exception\RuleErrorException;
 
 class Validator
@@ -21,7 +22,6 @@ class Validator
         $this->errorBag = new ErrorBag();
 
         foreach ($ruleFields as $field => $rules) {
-
             $attributeLabel = $field;
 
             if (isset($attributeLabels[$field])) {
@@ -34,17 +34,14 @@ class Validator
 
             $value = $this->inputContainer->getAttributeValue();
 
-            if (array_key_exists($field, $data)) {
-                $this->validated[$field] = $value;
-            }
+            $this->setValidatedData($field, $data, $value);
 
             if (\in_array('nullable', $rules) && $this->isEmpty($value)) {
                 continue;
             }
 
             foreach ($rules as $ruleName) {
-
-                if (is_string($ruleName) && strpos($ruleName, 'sanitize') !== false) {
+                if (\is_string($ruleName) && strpos($ruleName, 'sanitize') !== false) {
                     $this->applyFilter($ruleName, $field, $value);
 
                     continue;
@@ -68,6 +65,7 @@ class Validator
 
                 if (!$isValidated) {
                     $this->errorBag->addError($ruleClass, $customMessages);
+
                     break;
                 }
             }
@@ -86,10 +84,21 @@ class Validator
         return $this->errorBag->getErrors();
     }
 
+    public function validated()
+    {
+        return empty($this->errors()) ? $this->validated : $this->errors();
+    }
+
     private function resolveRule($ruleName)
     {
-        if (!is_string($ruleName)) {
-            throw new RuleErrorException("Rule name must be string");
+        if (\is_string($ruleName)) {
+            $ruleClass = __NAMESPACE__ . '\\Rules\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
+
+            if (!class_exists($ruleClass)) {
+                throw new RuleErrorException($ruleName);
+            }
+
+            return new $ruleClass();
         }
 
         $ruleClass = __NAMESPACE__
@@ -98,10 +107,10 @@ class Validator
             . 'Rule';
 
         if (!class_exists($ruleClass)) {
-            throw new RuleErrorException("Unsupported validation rule: $ruleName");
+            throw new RuleErrorException("Unsupported validation rule: {$ruleName}");
         }
 
-        return new $ruleClass;
+        return new $ruleClass();
     }
 
     private function parseRule($rule)
@@ -117,11 +126,6 @@ class Validator
         return [$ruleName, $params];
     }
 
-    public function validated()
-    {
-        return empty($this->errors()) ? $this->validated : $this->errors();
-    }
-
     private function applyFilter($sanitize, $fieldName, $value)
     {
         $data = explode('|', $sanitize);
@@ -130,12 +134,20 @@ class Validator
         $params = isset($data[1]) ? explode(',', $data[1]) : [];
 
         if (\count($sanitizeName) === 2) {
-
             list($prefix, $suffix) = $sanitizeName;
             $sanitizationMethod = $prefix . str_replace('_', '', ucwords($suffix, '_'));
 
-            if (method_exists($this, $sanitizationMethod)) {
-                $this->validated[$fieldName] = $this->{$sanitizationMethod}($value, $params);
+            if (!method_exists($this, $sanitizationMethod)) {
+                throw new MethodNotFoundException($sanitizationMethod);
+            }
+
+            $sanitizedValue = $this->{$sanitizationMethod}($value, $params);
+
+            $keys = explode('.', trim($fieldName, '[]'));
+            if (\count($keys) > 1) {
+                $this->setNestedElement($this->validated, $keys, $sanitizedValue);
+            } else {
+                $this->validated[$fieldName] = $sanitizedValue;
             }
         }
     }
