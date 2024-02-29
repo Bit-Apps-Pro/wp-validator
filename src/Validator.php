@@ -15,63 +15,130 @@ class Validator
 
     private $validated = [];
 
+    private $_customMessages = [];
+
+    private $_attributeLabels = [];
+
+    private $_data = [];
+
     public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null)
     {
+        $this->_data            = $data;
+        $this->_customMessages  = $customMessages;
+        $this->_attributeLabels = $attributeLabels;
+
         $this->inputContainer = new InputDataContainer($data);
 
         $this->errorBag = new ErrorBag();
 
         foreach ($ruleFields as $field => $rules) {
-            $attributeLabel = $field;
+            $this->processAndValidateField($field, $rules);
+        }
 
-            if (isset($attributeLabels[$field])) {
-                $attributeLabel = $attributeLabels[$field];
+        return $this;
+    }
+
+    public function processAndValidateField($field, $rules)
+    {
+        $attributeLabel = $field;
+
+        $fieldKeys = $this->processWildcardFieldKey($field);
+
+        foreach ($fieldKeys as $fieldKey) {
+            $this->validateField($fieldKey, $rules, $attributeLabel);
+        }
+    }
+
+    public function processWildcardFieldKey($field)
+    {
+        if (strpos($field, '*') === false) {
+            return [$field];
+        }
+
+        $nestedKeyQueue   = explode('.', $field);
+        $visitedFieldKeys = [];
+        $dataByKey        = (array) $this->_data;
+
+        while ($head = array_shift($nestedKeyQueue)) {
+            if (trim($head) === '*') {
+                $keys = array_keys((array) $dataByKey);
+                $dataByKey = count($keys) && \array_key_exists($keys[0], $dataByKey) ? $dataByKey[$keys[0]] : [];
+            } else {
+                $keys      = [$head];
+                $dataByKey = \array_key_exists($head, $dataByKey) ? $dataByKey[$head] : [];
             }
 
-            $this->inputContainer->setAttributeKey($field);
-
-            $this->inputContainer->setAttributeLabel($attributeLabel);
-
-            $value = $this->inputContainer->getAttributeValue();
-
-            $this->setValidatedData($field, $data, $value);
-
-            if (\in_array('nullable', $rules) && $this->isEmpty($value)) {
-                continue;
-            }
-
-            foreach ($rules as $ruleName) {
-                if (\is_string($ruleName) && strpos($ruleName, 'sanitize') !== false) {
-                    $this->applyFilter($ruleName, $field, $value);
-
-                    continue;
+            if (empty($visitedFieldKeys)) {
+                foreach ($keys as $keyToVisit) {
+                    $visitedFieldKeys[$keyToVisit] = 1;
                 }
-
-                if (is_subclass_of($ruleName, Rule::class)) {
-                    $ruleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
-                } else {
-                    list($ruleName, $paramValues) = $this->parseRule($ruleName);
-                    $ruleClass = $this->resolveRule($ruleName);
-                }
-
-                $ruleClass->setInputDataContainer($this->inputContainer);
-                $ruleClass->setRuleName($ruleName);
-
-                if (!empty($paramValues)) {
-                    $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);
-                }
-
-                $isValidated = $ruleClass->validate($this->inputContainer->getAttributeValue());
-
-                if (!$isValidated) {
-                    $this->errorBag->addError($ruleClass, $customMessages);
-
-                    break;
+            } else {
+                foreach ($visitedFieldKeys as $key => $v) {
+                    foreach ($keys as $keyToVisit) {
+                        unset($visitedFieldKeys[$key]);
+                        $visitedFieldKeys["{$key}.{$keyToVisit}"] = 1;
+                    }
                 }
             }
         }
 
-        return $this;
+        return array_keys($visitedFieldKeys);
+    }
+
+    public function validateField($fieldKey, $rules, $fieldLabel)
+    {
+        if (isset($this->_attributeLabels[$fieldLabel])) {
+            $attributeLabel = $this->_attributeLabels[$fieldLabel];
+        } else {
+            $attributeLabel = $fieldKey;
+        }
+
+        $this->inputContainer->setAttributeKey($fieldKey);
+
+        $this->inputContainer->setAttributeLabel($attributeLabel);
+
+        $value = $this->inputContainer->getAttributeValue();
+
+        $this->setValidatedData($fieldKey, $this->_data, $value);
+
+        if (\in_array('nullable', $rules) && $this->isEmpty($value)) {
+            return;
+        }
+
+        $this->validateByRules($fieldKey, $value, $rules);
+    }
+
+    public function validateByRules($fieldKey, $value, $rules)
+    {
+        foreach ($rules as $ruleName) {
+            if (\is_string($ruleName) && strpos($ruleName, 'sanitize') !== false) {
+                $this->applyFilter($ruleName, $fieldKey, $value);
+
+                continue;
+            }
+
+            if (is_subclass_of($ruleName, Rule::class)) {
+                $ruleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
+            } else {
+                list($ruleName, $paramValues) = $this->parseRule($ruleName);
+                $ruleClass                    = $this->resolveRule($ruleName);
+            }
+
+            $ruleClass->setInputDataContainer($this->inputContainer);
+            $ruleClass->setRuleName($ruleName);
+
+            if (!empty($paramValues)) {
+                $ruleClass->setParameterValues($ruleClass->getParamKeys(), $paramValues);
+            }
+
+            $isValidated = $ruleClass->validate($this->inputContainer->getAttributeValue());
+
+            if (!$isValidated) {
+                $this->errorBag->addError($ruleClass, $this->_customMessages);
+
+                break;
+            }
+        }
     }
 
     public function fails()
@@ -96,8 +163,8 @@ class Validator
         }
 
         $ruleClass = __NAMESPACE__
-        . '\\Rules\\'
-        . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName)))
+            . '\\Rules\\'
+            . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName)))
             . 'Rule';
 
         if (!class_exists($ruleClass)) {
