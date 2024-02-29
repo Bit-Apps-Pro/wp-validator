@@ -96,8 +96,8 @@ class Validator
         }
 
         $ruleClass = __NAMESPACE__
-            . '\\Rules\\'
-            . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName)))
+        . '\\Rules\\'
+        . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName)))
             . 'Rule';
 
         if (!class_exists($ruleClass)) {
@@ -143,6 +143,19 @@ class Validator
             } else {
                 $this->validated[$fieldName] = $sanitizedValue;
             }
+        }
+    }
+
+    private function setValidatedData($field, $data, $value)
+    {
+        $keys = explode('.', trim($field, '[]'));
+
+        if (count($keys) > 1 && $this->isNestedKeyExists($data, $keys)) {
+            $this->validated[$field] = $this->setNestedElement($data, $keys, $value);
+        }
+
+        if (array_key_exists($field, $data)) {
+            $this->validated[$field] = $value;
         }
     }
 }
