@@ -31,28 +31,6 @@ trait Helpers
 
     }
 
-    // public function setNestedElement($data, $keys, $value)
-    // {
-    //     $reference = &$data;
-    //     foreach ($keys as $key) {
-    //         if (is_object($reference) && property_exists($reference, $key)) {
-    //             $reference->$key = [];
-    //             $reference = &$reference->{$key};
-    //         } else {
-    //             if (is_array($reference) && !array_key_exists($key, $reference)) {
-    //                 $reference[$key] = [];
-    //             }
-    //             $reference = &$reference[$key];
-    //         }
-
-    //     }
-
-    //     $reference = $value;
-    //     unset($reference);
-
-    //     return $data;
-    // }
-
     public function setNestedElement(&$data, $keys, $value)
     {
         $current = &$data;
@@ -89,12 +67,15 @@ trait Helpers
         return $data;
     }
 
-    public function nestedArrayKeyExists($array, $keys)
+    public function isNestedKeyExists($data, $keys)
     {
-
         foreach ($keys as $key) {
-            if (\is_array($array) && \array_key_exists($key, $array)) {
-                $array = $array[$key];
+            if (\is_object($data) && isset($data->$key)) {
+                $data = $data->$key;
+            }
+
+            if (\is_array($data) && \array_key_exists($key, $data)) {
+                $data = $data[$key];
             } else {
                 return false;
             }

@@ -10,7 +10,9 @@ class ErrorBag
     public function addError($role, $customMessages)
     {
         $attributeKey = $role->getInputDataContainer()->getAttributeKey();
+
         $roleName = $role->getRuleName();
+
         $paramValues = $role->getParamValues();
 
         $defaultPlaceholders = [

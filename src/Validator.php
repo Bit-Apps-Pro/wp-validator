@@ -2,6 +2,7 @@
 
 namespace BitApps\WPValidator;
 
+use BitApps\WPValidator\Exception\MethodNotFoundException;
 use BitApps\WPValidator\Exception\RuleErrorException;
 
 class Validator
@@ -34,7 +35,7 @@ class Validator
 
             $value = $this->inputContainer->getAttributeValue();
 
-            $this->storeValidatedData($field, $data, $value);
+            $this->setValidatedData($field, $data, $value);
 
             if (\in_array('nullable', $rules) && $this->isEmpty($value)) {
                 continue;
@@ -91,7 +92,7 @@ class Validator
             $ruleClass = __NAMESPACE__ . '\\Rules\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName))) . 'Rule';
 
             if (!class_exists($ruleClass)) {
-                throw new RuleErrorException("Unsupported validation rule: $ruleName");
+                throw new RuleErrorException($ruleName);
             }
 
             return new $ruleClass;
@@ -130,26 +131,26 @@ class Validator
             list($prefix, $suffix) = $sanitizeName;
             $sanitizationMethod = $prefix . str_replace('_', '', ucwords($suffix, '_'));
 
-            if (method_exists($this, $sanitizationMethod)) {
+            if (!method_exists($this, $sanitizationMethod)) {
+                throw new MethodNotFoundException($sanitizationMethod);
+            }
 
-                $sanitizedValue = $this->{$sanitizationMethod}($value, $params);
+            $sanitizedValue = $this->{$sanitizationMethod}($value, $params);
 
-                $keys = explode('.', trim($fieldName, '[]'));
-                if (count($keys) > 1) {
-                    $this->setNestedElement($this->validated, $keys, $sanitizedValue);
-                } else {
-                    $this->validated[$fieldName] = $sanitizedValue;
-                }
-
+            $keys = explode('.', trim($fieldName, '[]'));
+            if (count($keys) > 1) {
+                $this->setNestedElement($this->validated, $keys, $sanitizedValue);
+            } else {
+                $this->validated[$fieldName] = $sanitizedValue;
             }
         }
     }
 
-    private function storeValidatedData($field, $data, $value)
+    private function setValidatedData($field, $data, $value)
     {
         $keys = explode('.', trim($field, '[]'));
 
-        if (\count($keys) > 1 && $this->nestedArrayKeyExists($data, $keys)) {
+        if (\count($keys) > 1 && $this->isNestedKeyExists($data, $keys)) {
             $this->setNestedElement($this->validated, $keys, $value);
         }
         if (\array_key_exists($field, $data)) {
