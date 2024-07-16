@@ -101,15 +101,13 @@ trait SanitizationMethods
     protected function sanitizeWpkses($value, $allowedHtml)
     {
 
-        $allowedHtml = $this->convertStrToNestedArray($allowedHtml);
+        $allowedHtml = $this->convertToNestedArray($allowedHtml);
 
         return wp_kses($value, $allowedHtml);
     }
 
-    protected function convertStrToNestedArray($str)
+    protected function convertToNestedArray($elements)
     {
-        $elements = explode(',', $str);
-
         $result = [];
 
         foreach ($elements as $element) {
