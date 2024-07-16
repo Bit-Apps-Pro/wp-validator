@@ -202,7 +202,7 @@ e.g `['file' => ['required', 'string', 'sanitize:file_name']`
 
 3. **`sanitize_html_class`**<br/>
 Sanitize content with allowed HTML tags for class attribute.<br/>
-e.g `['class' => ['required', 'string', 'sanitize:sanitize_html_class']`
+e.g `['class' => ['required', 'string', 'sanitize:html_class']`
 
 4. **`sanitize_key`**<br/>
 Sanitize content with allowed HTML tags for key attribute.<br/>
