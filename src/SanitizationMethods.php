@@ -87,4 +87,45 @@ trait SanitizationMethods
     {
         return ucfirst($value);
     }
+
+    protected function sanitizeTextarea($value)
+    {
+        return sanitize_textarea_field($value);
+    }
+
+    protected function sanitizeWpksespost($value)
+    {
+        return wp_kses_post($value);
+    }
+
+    protected function sanitizeWpkses($value, $allowedHtml)
+    {
+
+        $allowedHtml = $this->convertToNestedArray($allowedHtml);
+
+        return wp_kses($value, $allowedHtml);
+    }
+
+    protected function convertToNestedArray($elements)
+    {
+        $result = [];
+
+        foreach ($elements as $element) {
+            // Split each element by dots to get the hierarchy
+            $keys = explode('.', $element);
+
+            // Reference to the current level in the result array
+            $currentLevel = &$result;
+
+            foreach ($keys as $key) {
+                // Move to the next level in the hierarchy
+                if (!isset($currentLevel[$key])) {
+                    $currentLevel[$key] = [];
+                }
+                $currentLevel = &$currentLevel[$key];
+            }
+        }
+
+        return $result;
+    }
 }
