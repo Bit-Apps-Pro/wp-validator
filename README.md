@@ -191,6 +191,52 @@ Checks if the value is a valid URL.
 
 Missing any validation rule that you need? Refer to the [Custom Validation Rule](#custom-validation-rule) section to know how you can create and use custom validation rules in your project alongside the library.
 
+### Available sanitization functions
+1. **`sanitize_email`**<br/>
+Strip out all characters that are not allowable in an email address.<br/>
+e.g. `['email' => ['required', 'email', 'sanitize:email']`
+
+2. **`sanitize_file_name`**<br/>
+Sanitizes a file name by removing special characters.<br/>
+e.g `['file' => ['required', 'string', 'sanitize:file_name']`
+
+3. **`sanitize_html_class`**<br/>
+Sanitize content with allowed HTML tags for class attribute.<br/>
+e.g `['class' => ['required', 'string', 'sanitize:sanitize_html_class']`
+
+4. **`sanitize_key`**<br/>
+Sanitize content with allowed HTML tags for key attribute.<br/>
+e.g `['key' => ['required', 'string', 'sanitize:sanitize_key']`
+
+5. **`sanitize_text`**<br/>
+Strip out all characters that are not allowable in a string.<br/>
+e.g. `['name' => ['required', 'string', 'sanitize:text']`
+
+6. **`sanitize_textarea_field`**<br/>
+Sanitize content with allowed HTML tags for textarea field.<br/>
+e.g `['content' => ['required', 'string', 'sanitize:textarea']`
+
+7. **`sanitize_title`**<br/>
+Strip out all characters that are not allowable in a title.<br/>
+e.g. `['title' => ['required', 'string', 'sanitize:title']`
+
+8. **`sanitize_user`**<br/>
+Sanitize a username, striping out unsafe characters.<br/>
+e.g `['user' => ['required', 'string', 'sanitize:user']`
+
+9. **`sanitize_url`**<br/>
+Sanitizes a URL by removing invalid characters for safe use in HTML attributes.<br/>
+e.g. `['url' => ['required', 'url', 'sanitize:url']`
+
+10. **`wp_kses`**<br/>
+Sanitize content with allowed HTML tags.<br/>
+e.g `['content' => ['required', 'string', 'sanitize:wp_kses|a.href,a.title,br,em,strong']`
+
+11. **`wp_kses_post`**<br/>
+Sanitize content with allowed HTML tags for post content.<br/>
+e.g `['content' => ['required', 'string', 'sanitize:wp_kses_post']`
+
+
 ### Custom Validation Rule
 
 Create the class of the validation rule into your project:
