@@ -23,8 +23,8 @@ class Validator
 
     public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null)
     {
-        $this->_data            = $data;
-        $this->_customMessages  = $customMessages;
+        $this->_data = $data;
+        $this->_customMessages = $customMessages;
         $this->_attributeLabels = $attributeLabels;
 
         $this->inputContainer = new InputDataContainer($data);
@@ -55,16 +55,16 @@ class Validator
             return [$field];
         }
 
-        $nestedKeyQueue   = explode('.', $field);
+        $nestedKeyQueue = explode('.', $field);
         $visitedFieldKeys = [];
-        $dataByKey        = (array) $this->_data;
+        $dataByKey = (array) $this->_data;
 
         while ($head = array_shift($nestedKeyQueue)) {
             if (trim($head) === '*') {
                 $keys = array_keys((array) $dataByKey);
                 $dataByKey = count($keys) && \array_key_exists($keys[0], $dataByKey) ? $dataByKey[$keys[0]] : [];
             } else {
-                $keys      = [$head];
+                $keys = [$head];
                 $dataByKey = \array_key_exists($head, $dataByKey) ? $dataByKey[$head] : [];
             }
 
@@ -121,7 +121,7 @@ class Validator
                 $ruleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
             } else {
                 list($ruleName, $paramValues) = $this->parseRule($ruleName);
-                $ruleClass                    = $this->resolveRule($ruleName);
+                $ruleClass = $this->resolveRule($ruleName);
             }
 
             $ruleClass->setInputDataContainer($this->inputContainer);
@@ -136,6 +136,10 @@ class Validator
             if (!$isValidated) {
                 $this->errorBag->addError($ruleClass, $this->_customMessages);
 
+                break;
+            }
+
+            if (\in_array('present', $rules) && $this->isEmpty($value)) {
                 break;
             }
         }
@@ -163,8 +167,8 @@ class Validator
         }
 
         $ruleClass = __NAMESPACE__
-            . '\\Rules\\'
-            . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName)))
+        . '\\Rules\\'
+        . str_replace(' ', '', ucwords(str_replace('_', ' ', $ruleName)))
             . 'Rule';
 
         if (!class_exists($ruleClass)) {
