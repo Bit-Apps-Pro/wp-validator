@@ -16,7 +16,7 @@ class InputDataContainer
         $this->data = $data;
     }
 
-    public function setAttributeKey($key)
+    public function setAttributeKey($key): void
     {
         $this->attributeKey = $key;
     }
@@ -32,23 +32,21 @@ class InputDataContainer
 
         $data = $this->data;
 
-        if (is_array($keys) && count($keys) > 1) {
+        if (count($keys) > 1) {
             $data = $this->getValueFromPath($keys, $data);
+        } elseif (isset($data[$key])) {
+            return $data[$key];
+        } elseif (isset($data[$this->attributeKey])) {
+            return $data[$this->attributeKey];
         } else {
-            if (isset($data[$key])) {
-                return $data[$key];
-            } elseif (isset($data[$this->attributeKey])) {
-                return $data[$this->attributeKey];
-            } else {
-                return null;
-            }
+            return null;
         }
 
         return $data;
 
     }
 
-    public function setAttributeLabel($value)
+    public function setAttributeLabel($value): void
     {
         $this->attributeLabel = $value;
     }

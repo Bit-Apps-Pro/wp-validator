@@ -6,19 +6,14 @@ use stdClass;
 
 trait Helpers
 {
-    protected function isEmpty($val)
+    protected function isEmpty($val): bool
     {
-        if (empty($val) && !in_array($val, ['0', 0, 0.0, false], true)) {
-            return true;
-        }
-
-        return false;
+        return empty($val) && !in_array($val, ['0', 0, 0.0, false], true);
     }
 
     protected function getValueLength($value)
     {
         if (is_int($value) || is_float($value)) {
-            $value = $value;
         } elseif (is_string($value)) {
             $value = mb_strlen($value, 'UTF-8');
         } elseif (is_array($value)) {
@@ -44,9 +39,7 @@ trait Helpers
 
             $current = &$current[$key] ?? $current->$key;
         }
-
-        $current = $value;
-        return $current;
+        return $value;
     }
 
     public function getValueFromPath($keys, $data)
@@ -67,7 +60,7 @@ trait Helpers
         return $data;
     }
 
-    public function isNestedKeyExists($data, $keys)
+    public function isNestedKeyExists($data, $keys): bool
     {
         foreach ($keys as $key) {
             if (\is_object($data) && isset($data->$key)) {

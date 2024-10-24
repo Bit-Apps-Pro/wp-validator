@@ -21,7 +21,7 @@ class Validator
 
     private $_data = [];
 
-    public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null)
+    public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null): self
     {
         $this->_data            = $data;
         $this->_customMessages  = $customMessages;
@@ -38,7 +38,7 @@ class Validator
         return $this;
     }
 
-    public function processAndValidateField($field, $rules)
+    public function processAndValidateField($field, $rules): void
     {
         $attributeLabel = $field;
 
@@ -49,7 +49,7 @@ class Validator
         }
     }
 
-    public function processWildcardFieldKey($field)
+    public function processWildcardFieldKey($field): array
     {
         if (strpos($field, '*') === false) {
             return [$field];
@@ -68,12 +68,12 @@ class Validator
                 $dataByKey = \array_key_exists($head, $dataByKey) ? $dataByKey[$head] : [];
             }
 
-            if (empty($visitedFieldKeys)) {
+            if ($visitedFieldKeys === []) {
                 foreach ($keys as $keyToVisit) {
                     $visitedFieldKeys[$keyToVisit] = 1;
                 }
             } else {
-                foreach ($visitedFieldKeys as $key => $v) {
+                foreach (array_keys($visitedFieldKeys) as $key) {
                     foreach ($keys as $keyToVisit) {
                         unset($visitedFieldKeys[$key]);
                         $visitedFieldKeys["{$key}.{$keyToVisit}"] = 1;
@@ -85,13 +85,9 @@ class Validator
         return array_keys($visitedFieldKeys);
     }
 
-    public function validateField($fieldKey, $rules, $fieldLabel)
+    public function validateField($fieldKey, $rules, $fieldLabel): void
     {
-        if (isset($this->_attributeLabels[$fieldLabel])) {
-            $attributeLabel = $this->_attributeLabels[$fieldLabel];
-        } else {
-            $attributeLabel = $fieldKey;
-        }
+        $attributeLabel = isset($this->_attributeLabels[$fieldLabel]) ? $this->_attributeLabels[$fieldLabel] : $fieldKey;
 
         $this->inputContainer->setAttributeKey($fieldKey);
 
@@ -108,7 +104,7 @@ class Validator
         $this->validateByRules($fieldKey, $value, $rules);
     }
 
-    public function validateByRules($fieldKey, $value, $rules)
+    public function validateByRules($fieldKey, $value, $rules): void
     {
         foreach ($rules as $ruleName) {
             if (\is_string($ruleName) && strpos($ruleName, 'sanitize') !== false) {
@@ -141,9 +137,9 @@ class Validator
         }
     }
 
-    public function fails()
+    public function fails(): bool
     {
-        return !empty($this->errorBag->getErrors()) ? true : false;
+        return !empty($this->errorBag->getErrors());
     }
 
     public function errors()
@@ -174,7 +170,7 @@ class Validator
         return new $ruleClass();
     }
 
-    private function parseRule($rule)
+    private function parseRule($rule): array
     {
         $exp = explode(':', $rule, 2);
         $ruleName = $exp[0];
@@ -187,7 +183,7 @@ class Validator
         return [$ruleName, $params];
     }
 
-    private function applyFilter($sanitize, $fieldName, $value)
+    private function applyFilter(string $sanitize, $fieldName, $value): void
     {
         $data = explode('|', $sanitize);
 
@@ -213,7 +209,7 @@ class Validator
         }
     }
 
-    private function setValidatedData($field, $data, $value)
+    private function setValidatedData($field, $data, $value): void
     {
         $keys = explode('.', trim($field, '[]'));
 

@@ -63,27 +63,27 @@ trait SanitizationMethods
         return is_string($value) ? trim($value) : $value;
     }
 
-    protected function sanitizeEscape($value, $params = [])
+    protected function sanitizeEscape($value, $params = []): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
     }
 
-    protected function sanitizeCapitalize($value, $params = [])
+    protected function sanitizeCapitalize($value, $params = []): string
     {
         return ucwords(strtolower($value));
     }
 
-    protected function sanitizeLowercase($value)
+    protected function sanitizeLowercase($value): string
     {
         return strtolower($value);
     }
 
-    protected function sanitizeUppercase($value)
+    protected function sanitizeUppercase($value): string
     {
         return strtoupper($value);
     }
 
-    protected function sanitizeUcfirst($value)
+    protected function sanitizeUcfirst($value): string
     {
         return ucfirst($value);
     }
@@ -106,7 +106,7 @@ trait SanitizationMethods
         return wp_kses($value, $allowedHtml);
     }
 
-    protected function convertToNestedArray($elements)
+    protected function convertToNestedArray($elements): array
     {
         $result = [];
 

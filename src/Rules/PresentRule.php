@@ -7,17 +7,12 @@ class PresentRule extends Rule
 {
     private $message = 'The field name must be present.';
 
-    public function validate($value)
+    public function validate($value): bool
     {
         $attributeKey = $this->getInputDataContainer()->getAttributeKey();
 
         $data = $this->getInputDataContainer()->getData();
-
-        if (isset($data[$attributeKey])) {
-            return true;
-        }
-
-        return false;
+        return isset($data[$attributeKey]);
 
     }
 

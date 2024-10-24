@@ -7,7 +7,7 @@ class ErrorBag
     use Helpers;
     protected $errors = [];
 
-    public function addError($role, $customMessages)
+    public function addError($role, $customMessages): void
     {
         $attributeKey = $role->getInputDataContainer()->getAttributeKey();
 
@@ -32,7 +32,7 @@ class ErrorBag
         $this->errors[$attributeKey][] = $message;
     }
 
-    private function replacePlaceholders($placeholders, $message)
+    private function replacePlaceholders(array $placeholders, $message)
     {
         foreach ($placeholders as $key => $placeholder) {
             if (isset($placeholders[$key])) {
@@ -56,7 +56,7 @@ class ErrorBag
         return $this->errors;
     }
 
-    public function hasErrors($field = null)
+    public function hasErrors($field = null): bool
     {
         if ($field === null) {
             return !empty($this->errors);
