@@ -5,7 +5,7 @@ use BitApps\WPValidator\Rule;
 
 class PresentRule extends Rule
 {
-    private $message = 'The field name must be present.';
+    private $message = 'The :attribute field must be present.';
 
     public function validate($value): bool
     {
