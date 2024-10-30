@@ -16,7 +16,7 @@ class SizeRule extends Rule
         $size = $this->getParameter('size');
 
         if (is_string($value)) {
-            return strlen($value) === $size;
+            return strlen($value) == $size;
         }
         if (is_int($value)) {
             return $value === $size;
