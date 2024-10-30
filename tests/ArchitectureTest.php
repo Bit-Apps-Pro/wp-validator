@@ -10,6 +10,16 @@ arch('should expect extend Rule class')
     ->expect('BitApps\WPValidator\Rules')
     ->toExtend(Rule::class);
 
-arch('should expect validate and message methods')
+arch('should expect validate methods')
     ->expect('BitApps\WPValidator\Rules')
-    ->toHaveMethods(['validate', 'message']);
+    ->toHaveMethod('validate');
+
+arch('should expect message methods')
+    ->expect('BitApps\WPValidator\Rules')
+    ->toBeClasses()
+    ->toHaveMethod('message');
+
+arch('should expect class name to end with Rule')
+    ->expect('BitApps\WPValidator\Rules')
+    ->toBeClasses()
+    ->toHaveSuffix('Rule');
