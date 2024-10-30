@@ -11,6 +11,7 @@ class SameRule extends Rule
 
     public function validate($value): bool
     {
+
         $this->checkRequiredParameter($this->requireParameters);
 
         $otherValue = $this->getInputDataContainer()->getAttributeValue($this->getParameter('other'));
