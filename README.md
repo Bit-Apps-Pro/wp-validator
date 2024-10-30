@@ -175,18 +175,21 @@ Checks if the field under validation is present and not empty. A field is "empty
     - The value is `NULL` or `FALSE`.
     - The value is an empty string.
     - The value is an empty array or empty countable object.
-20. **`same:field`**<br/>
+
+20. **`present`**<br/>
+The field must be present in the input data for validation.
+21. **`same:field`**<br/>
 Checks if the field under validation is equal to the specified `:other` attribute.
-21. **`size:value`**<br/>
+22. **`size:value`**<br/>
 Checks if the field under validation has exactly the same size as `:size`.
     - For string data, the value corresponds to the number of characters.
     - For numeric data, the value corresponds to a given integer value.
     - For an array, the value corresponds to the count of the array.
-22. **`string`**<br/>
+23. **`string`**<br/>
 Checks if the given value is a string.
-23. **`uppercase`**<br/>
+24. **`uppercase`**<br/>
 Checks if the string value consists of all uppercase letters.
-24. **`url`**<br/>
+25. **`url`**<br/>
 Checks if the value is a valid URL.
 
 Missing any validation rule that you need? Refer to the [Custom Validation Rule](#custom-validation-rule) section to know how you can create and use custom validation rules in your project alongside the library.
