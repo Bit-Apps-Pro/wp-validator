@@ -21,7 +21,7 @@ class Validator
 
     private $_data = [];
 
-    public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null): self
+    public function make($data, $ruleFields, $customMessages = null, $attributeLabels = null)
     {
         $this->_data = $data;
         $this->_customMessages = $customMessages;
