@@ -13,12 +13,11 @@ trait Helpers
 
     protected function getValueLength($value)
     {
-        if (is_int($value) || is_float($value)) {
-        } elseif (is_string($value)) {
+        if (is_string($value)) {
             $value = mb_strlen($value, 'UTF-8');
         } elseif (is_array($value)) {
             $value = count($value);
-        } else {
+        } elseif (!is_int($value) && !is_float($value)) {
             return false;
         }
 
