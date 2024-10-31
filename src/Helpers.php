@@ -30,15 +30,18 @@ trait Helpers
         $current = &$data;
 
         foreach ($keys as $key) {
-            if (is_array($current) && !isset($current[$key])) {
+            if (\is_array($current) && !isset($current[$key])) {
                 $current[$key] = [];
-            } elseif (is_object($current) && !isset($current->$key)) {
-                $current->$key = new stdClass();
+            } elseif (\is_object($current) && !isset($current->{$key})) {
+                $current->{$key} = new stdClass();
             }
 
-            $current = &$current[$key] ?? $current->$key;
+            $current = &$current[$key] ?? $current->{$key};
         }
-        return $value;
+
+        $current = $value;
+
+        return $current;
     }
 
     public function getValueFromPath($keys, $data)
