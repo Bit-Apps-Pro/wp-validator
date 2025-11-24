@@ -191,6 +191,21 @@ Checks if the given value is a string.
 Checks if the string value consists of all uppercase letters.
 25. **`url`**<br/>
 Checks if the value is a valid URL.
+26. **`file`**<br/>
+Checks if the field under validation is a valid file upload. Supports standard PHP `$_FILES` arrays and WordPress attachment IDs.<br/>
+e.g. `['avatar' => ['required', 'file']]`
+27. **`mimes:type1,type2,...`**<br/>
+Checks if the file under validation has one of the allowed MIME types or extensions. Accepts comma-separated values (e.g., `jpg`, `png`, `pdf`).<br/>
+e.g. `['document' => ['required', 'file', 'mimes:pdf,doc,docx']]`
+28. **`max_file:size`**<br/>
+Checks if the file size (in kilobytes) is less than or equal to the specified maximum size.<br/>
+e.g. `['avatar' => ['required', 'file', 'max_file:2048']]` (2MB limit)
+29. **`image`**<br/>
+Checks if the file under validation is an image using WordPress allowed image MIME types.<br/>
+e.g. `['photo' => ['required', 'file', 'image']]`
+30. **`image_dimensions:width,height`**<br/>
+Checks if the image dimensions (in pixels) are less than or equal to the specified maximum width and height.<br/>
+e.g. `['avatar' => ['required', 'file', 'image', 'image_dimensions:1920,1080']]`
 
 Missing any validation rule that you need? Refer to the [Custom Validation Rule](#custom-validation-rule) section to know how you can create and use custom validation rules in your project alongside the library.
 
