@@ -1,5 +1,4 @@
 <?php
-
 namespace BitApps\WPValidator;
 
 class ErrorBag
@@ -17,16 +16,30 @@ class ErrorBag
 
         $defaultPlaceholders = [
             'attribute' => $role->getInputDataContainer()->getAttributeLabel(),
-            'value' => $role->getInputDataContainer()->getAttributeValue(),
+            'value'     => $role->getInputDataContainer()->getAttributeValue(),
         ];
 
         $placeholders = array_merge($paramValues, $defaultPlaceholders);
 
-        if (is_string($roleName) && isset($customMessages[$attributeKey . '.' . $roleName])) {
-            $message = $this->replacePlaceholders($placeholders, $customMessages[$attributeKey . '.' . $roleName]);
-        } elseif (is_string($roleName) && isset($customMessages[$roleName])) {
-            $message = $this->replacePlaceholders($placeholders, $customMessages[$roleName]);
-        } else {
+        $message = null;
+
+        if (is_string($roleName)) {
+            // Try exact match first
+            $exactKey = $attributeKey . '.' . $roleName;
+            if (isset($customMessages[$exactKey])) {
+                $message = $this->replacePlaceholders($placeholders, $customMessages[$exactKey]);
+            } else {
+                // Try wildcard pattern match for nested validation
+                $wildcardKey = $this->convertToWildcardPattern($attributeKey) . '.' . $roleName;
+                if (isset($customMessages[$wildcardKey])) {
+                    $message = $this->replacePlaceholders($placeholders, $customMessages[$wildcardKey]);
+                } elseif (isset($customMessages[$roleName])) {
+                    $message = $this->replacePlaceholders($placeholders, $customMessages[$roleName]);
+                }
+            }
+        }
+
+        if ($message === null) {
             $message = $this->replacePlaceholders($placeholders, $role->message());
         }
         $this->errors[$attributeKey][] = $message;
@@ -51,6 +64,18 @@ class ErrorBag
         return $message;
     }
 
+    private function convertToWildcardPattern($attributeKey)
+    {
+        $parts = explode('.', $attributeKey);
+        foreach ($parts as &$part) {
+            // Convert numeric indices to wildcards
+            if (is_numeric($part)) {
+                $part = '*';
+            }
+        }
+        return implode('.', $parts);
+    }
+
     public function getErrors($field = null)
     {
         return $this->errors;
@@ -59,9 +84,9 @@ class ErrorBag
     public function hasErrors($field = null): bool
     {
         if ($field === null) {
-            return !empty($this->errors);
+            return ! empty($this->errors);
         }
 
-        return isset($this->errors[$field]) && !empty($this->errors[$field]);
+        return isset($this->errors[$field]) && ! empty($this->errors[$field]);
     }
 }

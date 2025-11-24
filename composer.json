@@ -32,7 +32,9 @@
     },
 
     "require": {
-        "php": ">=7.2"
+        "php": ">=7.2",
+        "bitapps/wp-database": "^1",
+        "google/apiclient": "^2.0"
       },
     "require-dev": {
         "pestphp/pest": "^2.18",
