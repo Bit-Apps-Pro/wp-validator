@@ -1,0 +1,90 @@
+<?php
+namespace BitApps\WPValidator\Rules;
+
+use BitApps\WPValidator\Helpers;
+use BitApps\WPValidator\Rule;
+
+class MimesRule extends Rule
+{
+    use Helpers;
+
+    protected $message = "The :attribute must be a file of type: :mimes";
+
+    protected $requireParameters = ['mimes'];
+
+    public function validate($value)
+    {
+        $this->checkRequiredParameter($this->requireParameters);
+
+        if ($this->isEmpty($value)) {
+            return false;
+        }
+
+        $allowedMimes = $this->getParameter('mimes');
+        if (empty($allowedMimes)) {
+            return false;
+        }
+
+        $allowedTypes = array_map('trim', explode(',', $allowedMimes));
+
+        $fileInfo = $this->getFileInfo($value);
+        if (! $fileInfo) {
+            return false;
+        }
+
+        $fileType = $fileInfo['type'];
+        $fileName = $fileInfo['name'];
+
+        if (in_array($fileType, $allowedTypes, true)) {
+            return true;
+        }
+
+        $wpFileType = wp_check_filetype($fileName);
+        if ($wpFileType && isset($wpFileType['ext'])) {
+            $extension = strtolower($wpFileType['ext']);
+            if (in_array($extension, $allowedTypes, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getFileInfo($value)
+    {
+        // Handle attachment ID
+        if (is_numeric($value)) {
+            $attachmentId = (int) $value;
+            $filePath     = get_attached_file($attachmentId);
+            if (empty($filePath) || ! file_exists($filePath)) {
+                return null;
+            }
+
+            $wpFileType = wp_check_filetype(basename($filePath));
+            return [
+                'name' => basename($filePath),
+                'type' => $wpFileType['type'] ?? '',
+            ];
+        }
+
+        // Handle $_FILES format
+        if (is_array($value) && isset($value['name']) && isset($value['type'])) {
+            return [
+                'name' => $value['name'],
+                'type' => $value['type'],
+            ];
+        }
+
+        return null;
+    }
+
+    public function getParamKeys()
+    {
+        return $this->requireParameters;
+    }
+
+    public function message()
+    {
+        return $this->message;
+    }
+}
