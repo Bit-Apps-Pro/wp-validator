@@ -61,4 +61,14 @@ class InputDataContainer
         return $this->data;
     }
 
+    public function setAttributeValue($value): void
+    {
+        $keys = explode('.', trim($this->attributeKey, '[]'));
+
+        if (\count($keys) > 1) {
+            $this->setNestedElement($this->data, $keys, $value);
+        } else {
+            $this->data[$this->attributeKey] = $value;
+        }
+    }
 }
