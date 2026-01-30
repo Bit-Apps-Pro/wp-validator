@@ -105,16 +105,18 @@ class Validator
 
     public function validateByRules($fieldKey, $value, $rules): void
     {
-        // Apply sanitize rules first
-        foreach ($rules as $index => $ruleName) {
+        $validationRules = [];
+
+        foreach ($rules as $ruleName) {
             if (\is_string($ruleName) && strpos($ruleName, 'sanitize') !== false) {
                 $value = $this->applyFilter($ruleName, $fieldKey, $value);
                 $this->inputContainer->setAttributeValue($value);
-                unset($rules[$index]);
+            } else {
+                $validationRules[] = $ruleName;
             }
         }
 
-        foreach ($rules as $ruleName) {
+        foreach ($validationRules as $ruleName) {
             if (is_subclass_of($ruleName, Rule::class)) {
                 $ruleClass = \is_object($ruleName) ? $ruleName : new $ruleName();
             } else {
@@ -189,7 +191,7 @@ class Validator
         return [$ruleName, $params];
     }
 
-    private function applyFilter(string $sanitize, $fieldName, $value)
+    private function applyFilter(string $sanitize, $value)
     {
         $data = explode('|', $sanitize);
 
