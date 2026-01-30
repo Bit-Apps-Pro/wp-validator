@@ -109,7 +109,7 @@ class Validator
 
         foreach ($rules as $ruleName) {
             if (\is_string($ruleName) && strpos($ruleName, 'sanitize') !== false) {
-                $value = $this->applyFilter($ruleName, $fieldKey, $value);
+                $value = $this->applyFilter($ruleName, $value);
                 $this->inputContainer->setAttributeValue($value);
             } else {
                 $validationRules[] = $ruleName;
@@ -191,7 +191,7 @@ class Validator
         return [$ruleName, $params];
     }
 
-    private function applyFilter(string $sanitize, $value)
+    private function applyFilter($sanitize, $value)
     {
         $data = explode('|', $sanitize);
 
