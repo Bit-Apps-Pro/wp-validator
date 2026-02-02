@@ -139,7 +139,7 @@ class Validator
                 break;
             }
 
-            if (\in_array('present', $rules) && $this->isEmpty($value)) {
+            if ($ruleName === 'present' && $this->isEmpty($value)) {
                 break;
             }
         }
